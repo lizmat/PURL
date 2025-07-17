@@ -1,0 +1,29 @@
+{
+  "auth": "zef:lizmat",
+  "authors": [
+    "Elizabeth Mattijsen"
+  ],
+  "build-depends": [
+  ],
+  "depends": [
+    "JSON::Fast:ver<0.19+>:auth<cpan:TIMOTIMO>"
+  ],
+  "description": "Package URL specification v1.0.X",
+  "license": "Artistic-2.0",
+  "name": "PURL",
+  "perl": "6.d",
+  "provides": {
+    "PURL": "lib/PURL.rakumod"
+  },
+  "resources": [
+    "test-suite-data.json"
+  ],
+  "source-url": "https://github.com/lizmat/PURL.git",
+  "tags": [
+    "PURL",
+    "SBOM"
+  ],
+  "test-depends": [
+  ],
+  "version": "0.0.1"
+}

@@ -1,0 +1,16 @@
+use Test;
+use PURL;
+
+plan 7;
+
+my $purl := PURL.new("pkg:maven/org.apache.commons/io@1.3.4");
+isa-ok $purl, PURL;
+
+is $purl.type,      'maven',              'is the type correct';
+is $purl.namespace, 'org.apache.commons', 'is the namespace correct';
+is $purl.name,      'io',                 'is the name correct';
+is $purl.version,   '1.3.4',              'is the version correct';
+is-deeply $purl.qualifiers, Map.new,      'are there no qualifiers';
+ok !$purl.subpath.defined,                'is the subpath not present';
+
+# vim: expandtab shiftwidth=4

@@ -1,0 +1,56 @@
+use Test;
+use PURL;
+use JSON::Fast:ver<0.19+>:auth<cpan:TIMOTIMO>;
+
+my @tests = from-json
+  $*PROGRAM.sibling("test-suite-data.json").slurp,
+  :immutable
+;
+
+plan 1 + @tests;
+
+ok @tests, 'did we get any tests';
+
+for @tests -> %test {
+    my $spec := %test<purl>;
+
+    subtest %test<description> => {
+
+        if %test<is_invalid> {
+            todo "Invalid conan tests semantics unclear"
+              if %test<type> && %test<type> eq 'conan' | 'cpan';
+            nok (try PURL.new($spec)), "'$spec' is invalid";
+        }
+        orwith PURL.new($spec) -> $purl {
+            is $purl.scheme, 'pkg', "Was the scheme correct";
+            is $purl.type, %test<type>, "Was the type correct";
+
+            for <namespace name version subpath> -> $field {
+                with %test{$field} -> $value {
+                    todo "Unclear semantics"
+                      if $field eq 'name' && $purl.type eq 'mlflow';
+                    is $purl."$field"(), $value,
+                      "Is $field correct";
+                }
+                else {
+                    ok !$purl."$field"().defined,
+                      "Is $field undefined";
+                }
+            }
+            with %test<qualifiers> -> %qualifiers {
+                is-deeply $purl.qualifiers, %qualifiers,
+                  "Are the qualifiers correct";
+            }
+
+#            is $purl, %test<canonical_purl>,
+#              "Is the canonical version correct";
+        }
+        else {
+            flunk "'$spec' did not produce a valid Purl object";
+        }
+
+        done-testing;
+    }
+}
+
+# vim: expandtab shiftwidth=4
