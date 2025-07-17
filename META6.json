@@ -16,7 +16,6 @@
     "PURL": "lib/PURL.rakumod"
   },
   "resources": [
-    "test-suite-data.json"
   ],
   "source-url": "https://github.com/lizmat/PURL.git",
   "tags": [
