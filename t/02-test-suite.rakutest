@@ -2,6 +2,8 @@ use Test;
 use PURL;
 use JSON::Fast:ver<0.19+>:auth<cpan:TIMOTIMO>;
 
+# To update tests:
+# $ curl https://raw.githubusercontent.com/package-url/purl-spec/refs/heads/main/test-suite-data.json >/t/test-suite-data/json
 my @tests = from-json
   $*PROGRAM.sibling("test-suite-data.json").slurp,
   :immutable
@@ -27,10 +29,11 @@ for @tests -> %test {
             is $purl.type, %test<type>, "Was the type correct";
 
             for <namespace name version subpath> -> $field {
-                with %test{$field} -> $value {
+                with %test{$field} {
                     todo "Unclear semantics"
-                      if $field eq 'name' && $purl.type eq 'mlflow';
-                    is $purl."$field"(), $value,
+                      if $field eq 'name' && $purl.type eq 'mlflow'
+                      || $field eq 'subpath' && .contains(/ "/." "."? "/" /);
+                    is $purl."$field"(), $_,
                       "Is $field correct";
                 }
                 else {
@@ -43,13 +46,21 @@ for @tests -> %test {
                   "Are the qualifiers correct";
             }
 
-#            is $purl, %test<canonical_purl>,
-#              "Is the canonical version correct";
+            my $canonical := %test<canonical_purl>;
+            todo ": in version not encoded?"
+              if $canonical.contains("sha256:");
+            todo "slashes ok in encoded qualifier?"
+              if $canonical.contains("io/release")
+              || $canonical.contains("repository_url=https");
+            todo ": ok in encoded name?"
+              if $canonical.contains("cpan/URI::PackageURL");
+            is $purl, $canonical,
+              "Is the canonical version correct";
 
             is-deeply PURL($spec), True, "PURL('$spec) is True";
         }
         else {
-            flunk "'$spec' did not produce a valid Purl object";
+            flunk "'$spec' did not produce a valid PURL object";
         }
 
         done-testing;

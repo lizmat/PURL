@@ -2,6 +2,8 @@ Revision history for PURL
 
 {{$NEXT}}
     - Fix thinko in validity check
+    - Make stringification return the canonical URL
+    - Added stringification tests (with some todo's)
 
 0.0.1  2025-07-17T16:12:27+02:00
     - Initial version
