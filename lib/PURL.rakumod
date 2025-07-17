@@ -1,6 +1,6 @@
 use JSON::Fast:ver<0.19+>:auth<cpan:TIMOTIMO>;
 
-class PURL {
+class PURL:ver<0.0.1>:auth<zef:lizmat> {
     has Str $.scheme is required;
     has Str $.type   is required;
     has Str $.name   is required;
