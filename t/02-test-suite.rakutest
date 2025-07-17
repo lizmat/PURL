@@ -17,9 +17,10 @@ for @tests -> %test {
     subtest %test<description> => {
 
         if %test<is_invalid> {
-            todo "Invalid conan tests semantics unclear"
+            todo "Invalid conan tests semantics unclear", 2
               if %test<type> && %test<type> eq 'conan' | 'cpan';
-            nok (try PURL.new($spec)), "'$spec' is invalid";
+            nok (try PURL.new($spec)), "PURL.new('$spec') throws";
+            is-deeply PURL($spec), False, "PURL('$spec) is False";
         }
         orwith PURL.new($spec) -> $purl {
             is $purl.scheme, 'pkg', "Was the scheme correct";
@@ -44,6 +45,8 @@ for @tests -> %test {
 
 #            is $purl, %test<canonical_purl>,
 #              "Is the canonical version correct";
+
+            is-deeply PURL($spec), True, "PURL('$spec) is True";
         }
         else {
             flunk "'$spec' did not produce a valid Purl object";

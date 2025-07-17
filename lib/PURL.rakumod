@@ -175,7 +175,7 @@ class PURL:ver<0.0.1>:auth<zef:lizmat> {
               if @!subpath)
     }
 
-    method CALL-ME(Str:D $spec --> Bool:D) { (try self!hashify).Bool }
+    method CALL-ME(Str:D $spec --> Bool:D) { (try self!hashify($spec)).Bool }
 }
 
 my sub is-identifier($_) {

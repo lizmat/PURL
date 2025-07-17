@@ -36,7 +36,7 @@ if PURL("pkg:maven/org.apache.commons/io@1.3.4") {
 }
 ```
 
-To just specify the validity of a Package URL, one can call the class itself with the Package URL to check: it will return either `True` or `False`.
+To just see whether a string that claims to be a Package URL is valid, one can call the class itself with that string to check: it will return either `True` or `False` (without throwing any exception).
 
 INSTANTIATION
 =============
