@@ -27,7 +27,7 @@ my sub decode(Str:D $_) {
 }
 
 #- PURL ------------------------------------------------------------------------
-class PURL:ver<0.0.1>:auth<zef:lizmat> {
+class PURL:ver<0.0.2>:auth<zef:lizmat> {
     has Str $.scheme is required;
     has Str $.type   is required;
     has Str $.name   is required;
