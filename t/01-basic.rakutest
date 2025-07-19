@@ -1,7 +1,7 @@
 use Test;
 use PURL;
 
-plan 7;
+plan 9;
 
 my $purl := PURL.new("pkg:maven/org.apache.commons/io@1.3.4");
 isa-ok $purl, PURL;
@@ -12,5 +12,19 @@ is $purl.name,      'io',                 'is the name correct';
 is $purl.version,   '1.3.4',              'is the version correct';
 is-deeply $purl.qualifiers, Map.new,      'are there no qualifiers';
 ok !$purl.subpath.defined,                'is the subpath not present';
+
+my @types := PURL::Type.supported-types;
+ok +@types, 'got at least one type';
+
+subtest "checking all decsriptions and examples" => {
+    plan 2 * @types;
+
+    for @types -> $class {
+        ok !$class.description.contains("No description"),
+          "$class.^name() has description";
+        ok +$class.examples,
+          "$class.^name() has examples";
+    }
+}
 
 # vim: expandtab shiftwidth=4

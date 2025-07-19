@@ -1,0 +1,21 @@
+use Test;
+use PURL;
+
+my @names = PURL::Type.supported-names;
+
+plan +@names;
+
+for @names -> $name {
+    my $type := PURL::Type($name);
+
+    subtest "Checking examples of $name" => {
+
+        for $type.examples -> $purl {
+            ok PURL($purl), "is this purl ok: $purl";
+        }
+
+        done-testing;
+    }
+}
+
+# vim: expandtab shiftwidth=4

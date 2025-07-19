@@ -1,6 +1,15 @@
 Revision history for PURL
 
 {{$NEXT}}
+    - Abstracted the different checking / canonicalization
+      behaviours into a PURL::Type base class, and a subclass
+      for each supported type.  And use that logic when
+      instantiating a PURL object
+    - Added introspection methods "description" and "examples"
+      to PURL::Type
+    - UnTODO almost all TODO tests in test-suite
+    - Add a test-file that checks the validity of all PURLs
+      as given in the PURL documentation
 
 0.0.2  2025-07-17T20:23:17+02:00
     - Fix thinko in validity check

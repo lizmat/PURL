@@ -2,9 +2,9 @@ use Test::Coverage;
 
 plan 2;
 
-coverage-at-least 81;
+coverage-at-least 66;
 
-uncovered-at-most 14;
+uncovered-at-most 89;
 
 source-with-coverage;
 

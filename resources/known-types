@@ -1,0 +1,100 @@
+alpm
+Arch Linux and other users of the libalpm/pacman package manager.
+
+apk
+APK-based packages.
+
+bitbucket
+Bitbucket-based packages.
+
+bitnami
+Bitnami-based packages.
+
+cargo
+Rust.
+
+cocoapods
+CocoaPods.
+
+composer
+Composer PHP packages.
+
+conan
+Conan C/C++ packages. The purl is designed to closely resemble the
+Conan-native <package-name>/<package-version>@<user>/<channel>
+syntax for package references.
+
+conda
+Conda packages.
+
+cpan
+CPAN Perl packages.
+
+cran
+CRAN R packages.
+
+deb
+Debian, Debian derivatives, and Ubuntu packages.
+
+docker
+Docker images.
+
+gem
+RubyGems.
+
+generic
+Plain, generic packages that do not fit anywhere else such as for
+"upstream-from-distro" packages. In particular this is handy for a
+plain version control repository such as a bare git repo.
+
+github
+GitHub-based packages.
+
+golang
+Go packages.
+
+hackage
+Haskell packages.
+
+hex
+Hex packages.
+
+huggingface
+Hugging Face ML models.
+
+luarocks
+Lua packages installed with LuaRocks
+
+maven
+Maven JARs and related artifacts.
+
+mlflow
+MLflow ML models (Azure ML, Databricks, etc.).
+
+npm
+Node NPM packages
+
+nuget
+NuGet .NET packages.
+
+oci
+All artifacts stored in registries that conform to the OCI Distribution
+Specification, including container images built by Docker and others.
+
+pub
+Dart and Flutter packages.
+
+pypi
+Python packages.
+
+qpkg
+QNX packages.
+
+rpm
+RPMs.
+
+swid
+ISO-IEC 19770-2 Software Identification (SWID) tags.
+
+swift
+SWIFT packages.

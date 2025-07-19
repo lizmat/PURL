@@ -87,6 +87,54 @@ subpath
 
 The subpath of tha package specification.
 
+SUPPORTED TYPES
+===============
+
+The `PURL::Type` class allows for various types of introspection.
+
+Calling the class with a string will either return the type object for the given string, or a `Failure`.
+
+```raku
+my $class = PURL::Type("bitbucket");
+say "bitbucket is valid" unless $class ~~ Failure;
+```
+
+supported-names
+---------------
+
+```raku
+say PURL::Type.supported-names;  # (alpm apk bitbucket bitnami...
+```
+
+The `supported-names` class method returns the names of the supported PURL types, in alphabetical order.
+
+supported-types
+---------------
+
+```raku
+say PURL::Type.supported-types;  # ((alpm) (apk) (bitbucket)...
+```
+
+The `supported-types` class method returns the type objects of the supported PURL types, in alphabetical order.
+
+description
+-----------
+
+```raku
+say PURL::Type.description("bitbucket");  # Bitbucket-based packages.
+```
+
+The `description` class method takes the name of a PURL type and returns its description.
+
+examples
+--------
+
+```raku
+.say for PURL::Type.examples("bitbucket");  # pkg:bitbucket/birke...
+```
+
+The `examples` class method takes the name of a PURL type and returns a list of valid PURL examples of that PURL type.
+
 AUTHOR
 ======
 

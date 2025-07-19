@@ -1,4 +1,5 @@
 use JSON::Fast:ver<0.19+>:auth<cpan:TIMOTIMO>;
+use PURL::Type:ver<0.0.2>:auth<zef:lizmat>;
 
 #- helper subroutines ----------------------------------------------------------
 
@@ -13,7 +14,7 @@ my sub trim-slashes(Str:D $_) { .subst(/^ '/'+ /).subst(/ '/'+ $/) }
 # Quick-and-dirty percent-decode a string
 my sub encode(Str:D $_) {
   .subst:
-    / <-[a..z A..Z 0..9 _ ~ . -]> /,
+    / <-[a..z A..Z 0..9 _ ~ . : = / % -]> /,
     '%' ~ *.ord.fmt('%02x'),
     :global
 }
@@ -46,7 +47,7 @@ class PURL:ver<0.0.2>:auth<zef:lizmat> {
 
         # subpath
         with $spec.rindex("#") -> $index {
-            %args<subpath> := $spec.substr($index + 1).split("/").map({
+            %args<subpath> = $spec.substr($index + 1).split("/").map({
                 if $_ {
                     my $decode = decode($_);
                     $decode unless $decode eq '.' | '..';
@@ -62,7 +63,7 @@ class PURL:ver<0.0.2>:auth<zef:lizmat> {
         # qualifier
         with $remainder.rindex("?") -> $index {
             my %seen;
-            %args<qualifiers> := $remainder.substr($index + 1).split('&').map({
+            %args<qualifiers> = $remainder.substr($index + 1).split('&').map({
                 my ($key, $value) = .split("=", 2);
                 die "Invalid qualifier key: $key" unless is-identifier($key);
 
@@ -95,7 +96,7 @@ class PURL:ver<0.0.2>:auth<zef:lizmat> {
             my $type := $remainder.substr(0,$index);
             die "Invalid type: $type" unless is-identifier($type);
 
-            %args<type> := $type;
+            %args<type> = $type.lc;  # canonicalize now for later checks
 
             $remainder = $remainder.substr($index + 1);
         }
@@ -105,12 +106,9 @@ class PURL:ver<0.0.2>:auth<zef:lizmat> {
 
         # version
         with $remainder.rindex("@") -> $index {
-            %args<version> := decode $remainder.substr($index + 1);
+            %args<version> = decode $remainder.substr($index + 1);
 
             $remainder = $remainder.substr(0, $index);
-        }
-        elsif %args<type> eq 'cran' | 'swift' {
-            die "'%args<type>' requires a version specification";
         }
 
         # name
@@ -129,7 +127,7 @@ class PURL:ver<0.0.2>:auth<zef:lizmat> {
         if $name {
             $name = decode trim-slashes $name;
 
-            %args<name> := $name;
+            %args<name> = $name;
         }
         else {
             die "Must have a name specified";
@@ -142,8 +140,39 @@ class PURL:ver<0.0.2>:auth<zef:lizmat> {
                 decode $_ if $_
             }).join("/");
         }
-        elsif %args<type> eq 'swift' {
-            die "'%args<type> requires a namespace";
+
+        # Do all additional custom chekcs and value customizations
+        my $customization = PURL::Type(%args<type>);
+        unless $customization ~~ Failure {
+            $customization .= new;
+
+            # First do all of the checks
+            $customization.check-naming(|%args<name namespace>);
+            $customization.check-version(%args<version>);
+            with %args<qualifiers> -> %qualifiers {
+                $customization.check-qualifier($_) for %qualifiers;
+            }
+            with %args<subpath> -> @parts {
+                $customization.check-subpath($_) for @parts;
+            }
+
+            # Then do all the canonicalizations
+            %args<name> := $_
+              with $customization.canonicalize-name(%args<name>);
+            %args<namespace> := $_
+              with $customization.canonicalize-namespace(%args<namespace>);
+            %args<version> := $_
+              with $customization.canonicalize-version(%args<version>);
+            with %args<qualifiers> -> %qualifiers {
+                %args<qualifiers> := %qualifiers.map({
+                    $customization.canonicalize-qualifier($_)
+                }).Map
+            }
+            with %args<subpath> -> @parts {
+                %args<subpath> := @parts.map({
+                    $customization.canonicalize-subpath($_)
+                }).List;
+            }
         }
 
         %args

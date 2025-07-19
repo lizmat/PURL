@@ -13,9 +13,12 @@
   "name": "PURL",
   "perl": "6.d",
   "provides": {
-    "PURL": "lib/PURL.rakumod"
+    "PURL": "lib/PURL.rakumod",
+    "PURL::Type": "lib/PURL/Type.rakumod"
   },
   "resources": [
+    "known-types",
+    "examples"
   ],
   "source-url": "https://github.com/lizmat/PURL.git",
   "tags": [

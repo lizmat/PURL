@@ -20,7 +20,7 @@ for @tests -> %test {
 
         if %test<is_invalid> {
             todo "Invalid conan tests semantics unclear", 2
-              if %test<type> && %test<type> eq 'conan' | 'cpan';
+              if %test<type> && %test<type> eq 'conan';
             nok (try PURL.new($spec)), "PURL.new('$spec') throws";
             is-deeply PURL($spec), False, "PURL('$spec) is False";
         }
@@ -31,8 +31,7 @@ for @tests -> %test {
             for <namespace name version subpath> -> $field {
                 with %test{$field} {
                     todo "Unclear semantics"
-                      if $field eq 'name' && $purl.type eq 'mlflow'
-                      || $field eq 'subpath' && .contains(/ "/." "."? "/" /);
+                      if $field eq 'subpath' && .contains(/ "/." "."? "/" /);
                     is $purl."$field"(), $_,
                       "Is $field correct";
                 }
@@ -47,13 +46,6 @@ for @tests -> %test {
             }
 
             my $canonical := %test<canonical_purl>;
-            todo ": in version not encoded?"
-              if $canonical.contains("sha256:");
-            todo "slashes ok in encoded qualifier?"
-              if $canonical.contains("io/release")
-              || $canonical.contains("repository_url=https");
-            todo ": ok in encoded name?"
-              if $canonical.contains("cpan/URI::PackageURL");
             is $purl, $canonical,
               "Is the canonical version correct";
 
