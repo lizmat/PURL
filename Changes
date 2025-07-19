@@ -1,6 +1,8 @@
 Revision history for PURL
 
 {{$NEXT}}
+
+0.0.3  2025-07-19T20:18:23+02:00
     - Abstracted the different checking / canonicalization
       behaviours into a PURL::Type base class, and a subclass
       for each supported type.  And use that logic when

@@ -1,5 +1,5 @@
 use JSON::Fast:ver<0.19+>:auth<cpan:TIMOTIMO>;
-use PURL::Type:ver<0.0.2>:auth<zef:lizmat>;
+use PURL::Type:ver<0.0.3>:auth<zef:lizmat>;
 
 #- helper subroutines ----------------------------------------------------------
 
@@ -28,7 +28,7 @@ my sub decode(Str:D $_) {
 }
 
 #- PURL ------------------------------------------------------------------------
-class PURL:ver<0.0.2>:auth<zef:lizmat> {
+class PURL:ver<0.0.3>:auth<zef:lizmat> {
     has Str $.scheme is required;
     has Str $.type   is required;
     has Str $.name   is required;
