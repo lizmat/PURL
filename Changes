@@ -1,6 +1,11 @@
 Revision history for PURL
 
 {{$NEXT}}
+    - Made sure that gisting stringifies
+    - Added dependency on "Identity::Utils"
+    - Added preliminary support for the "raku" type
+    - Added method "from-identity" to create a PURL from a
+      Raku module identity
 
 0.0.3  2025-07-19T20:18:23+02:00
     - Abstracted the different checking / canonicalization

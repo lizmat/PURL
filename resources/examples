@@ -143,6 +143,13 @@ qpkg
 pkg:qpkg/blackberry/com.qnx.sdp@7.0.0.SGA201702151847
 pkg:qpkg/blackberry/com.qnx.qnx710.foo.bar.qux@0.0.4.01449T202205040833L
 
+raku
+pkg:raku/zef:lizmat/SBOM::CycloneDX@0.07
+pkg:raku/cpan:TIMOTIMO/JSON::Fast@0.19
+pkg:raku/zef:vrurg/Cro::RPC::JSON@0.1.6/2
+pkg:raku/zef:lizmat/SBOM::CycloneDX@0.07?download_url=https://360.zef.pm/S/BO/SBOM_CYCLONEDX/e9df9ac7d473c289aae4df19ea10c0289bb04851.tar.gz&repository_url=https://github.com/lizmat/SBOM-CycloneDX
+pkg:raku/cpan:TIMOTIMO/JSON::Fast@0.19?download_url=https://cpan.metacpan.org/authors/id//T/TI/TIMOTIMO/Perl6/JSON-Fast-0.19.tar.gz&repository_url=https://github.com/timo/json_fast
+
 rpm
 pkg:rpm/fedora/curl@7.50.3-1.fc25?arch=i386&distro=fedora-25
 pkg:rpm/centerim@4.22.10-1.el6?arch=i686&epoch=1&distro=fedora-25

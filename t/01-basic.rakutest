@@ -1,7 +1,16 @@
 use Test;
+use Identity::Utils:ver<0.0.19+>:auth<zef:lizmat> <
+  api auth short-name ver
+>;
 use PURL;
 
-plan 9;
+my @identities = <
+  SBOM::CycloneDX:ver<0.0.7>:auth<zef:lizmat>
+  JSON::Fast:ver<0.19>:auth<cpan:TIMOTIMO>
+  Cro::RPC::JSON:ver<0.1.6>:auth<zef:vrurg>:api<2>
+>;
+
+plan 10 + @identities;
 
 my $purl := PURL.new("pkg:maven/org.apache.commons/io@1.3.4");
 isa-ok $purl, PURL;
@@ -13,10 +22,12 @@ is $purl.version,   '1.3.4',              'is the version correct';
 is-deeply $purl.qualifiers, Map.new,      'are there no qualifiers';
 ok !$purl.subpath.defined,                'is the subpath not present';
 
+is $purl.gist, $purl.Str, 'Does it gist as the stringification';
+
 my @types := PURL::Type.supported-types;
 ok +@types, 'got at least one type';
 
-subtest "checking all decsriptions and examples" => {
+subtest "checking all descriptions and examples" => {
     plan 2 * @types;
 
     for @types -> $class {
@@ -24,6 +35,22 @@ subtest "checking all decsriptions and examples" => {
           "$class.^name() has description";
         ok +$class.examples,
           "$class.^name() has examples";
+    }
+}
+
+for @identities -> $identity {
+    subtest "checking Raku identity '$identity'" => {
+        plan 4;
+
+        my $purl = PURL.from-identity($identity);
+        isa-ok $purl, PURL;
+
+        is $purl.namespace,  auth($identity), 'is auth correct';
+        is $purl.name, short-name($identity), 'is name correct';
+
+        is $purl.version,
+          ver($identity) ~ ("/$_" with api($identity)),
+          'is version correct';
     }
 }
 

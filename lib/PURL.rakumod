@@ -1,3 +1,6 @@
+use Identity::Utils:ver<0.0.19+>:auth<zef:lizmat> <
+  api auth is-pinned short-name ver
+>;
 use JSON::Fast:ver<0.19+>:auth<cpan:TIMOTIMO>;
 use PURL::Type:ver<0.0.3>:auth<zef:lizmat>;
 
@@ -182,6 +185,22 @@ class PURL:ver<0.0.3>:auth<zef:lizmat> {
         self.bless: |self!hashify($spec)
     }
 
+    method from-identity(PURL: Str:D $id) {
+        die "Impossible to create PURL from '$id' because it is not pinned."
+          unless is-pinned($id);
+
+        my %spec =
+          scheme    => "pkg",
+          type      => "raku",
+          namespace => auth($id),
+          name      => short-name($id),
+          version   => ver($id) ~ ("/$_" with api($id))
+        ;
+        %spec{.key} = .value for %_;
+
+        self.bless: |%spec
+    }
+
     method qualifiers(PURL:D:) { %!qualifiers.Map }
 
     method subpath(PURL:D:) {
@@ -200,6 +219,7 @@ class PURL:ver<0.0.3>:auth<zef:lizmat> {
           ~ ("#@!subpath.map(&encode).join("/")"
               if @!subpath)
     }
+    multi method gist(PURL:D:) { self.Str }
 
     method CALL-ME(Str:D $spec --> Bool:D) { (try self!hashify($spec)).Bool }
 }

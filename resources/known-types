@@ -90,6 +90,9 @@ Python packages.
 qpkg
 QNX packages.
 
+raku
+Library / module distributions in the Raku Programming Language.
+
 rpm
 RPMs.
 

@@ -349,6 +349,14 @@ class PURL::qpkg is PURL::Type {
 }
 
 #- R ---------------------------------------------------------------------------
+class PURL::raku is PURL::Type {
+    method qualifier-keys() {
+        <download_url repository_url>
+    }
+    method canonicalize-name(     $_) { $_ }
+    method canonicalize-namespace($_) { $_ }
+}
+
 class PURL::rpm is PURL::Type {
     method qualifier-keys() {
         <arch distro epoch repository_url>
