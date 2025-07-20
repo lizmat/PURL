@@ -182,47 +182,6 @@ class PURL:ver<0.0.3>:auth<zef:lizmat> {
         self.bless: |self!hashify($spec)
     }
 
-    method type(PURL:D:) { $!type.lc }
-
-    method name(PURL:D:) {
-        my constant %verbatim = <
-          cpan cran hackage huggingface maven mlflow nuget swift
-        >.Set;
-
-        my $type := self.type;
-        %verbatim{$type}
-          ?? $!name
-          !! $type eq 'pypi'
-            ?? $!name.lc.trans("_" => "-")
-            !! $!name.lc
-    }
-
-    method namespace(PURL:D:) {
-        my constant %verbatim = <
-          cpan huggingface maven swift
-        >.Set;
-
-        with $!namespace {
-            %verbatim{self.type} ?? $_ !! .lc
-        }
-        else {
-            Str
-        }
-    }
-
-    method version(PURL:D:) {
-        my constant %verbatim = <
-          maven
-        >.Set;
-
-        with $!version {
-            %verbatim{self.type} ?? $_ !! .lc
-        }
-        else {
-            Str
-        }
-    }
-
     method qualifiers(PURL:D:) { %!qualifiers.Map }
 
     method subpath(PURL:D:) {
@@ -235,8 +194,9 @@ class PURL:ver<0.0.3>:auth<zef:lizmat> {
           ~ ("/$_.split("/").map(&encode).join("/")" with self.namespace)
           ~ "/&encode(self.name)"
           ~ ("@" ~ encode($_) with self.version)
-          ~ ("?%!qualifiers.sort(*.key).map({ .key ~ '=' ~ encode .value }).join("&")"
-              if %!qualifiers)
+          ~ ("?%!qualifiers.sort(*.key).map({
+                .key ~ '=' ~ encode .value
+            }).join("&")" if %!qualifiers)
           ~ ("#@!subpath.map(&encode).join("/")"
               if @!subpath)
     }

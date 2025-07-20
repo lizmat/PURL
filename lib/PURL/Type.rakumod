@@ -249,6 +249,7 @@ class PURL::huggingface is PURL::Type {
     }
     method canonicalize-namespace($_) { $_ }
     method canonicalize-name(     $_) { $_ }
+    method canonicalize-version(  $_) { .lc }
 }
 
 #- L ---------------------------------------------------------------------------
