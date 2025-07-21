@@ -353,6 +353,11 @@ class PURL::raku is PURL::Type {
     method qualifier-keys() {
         <download_url repository_url>
     }
+
+    method check-version($_) {
+        die "Version can not be '$_'" if $_ && $_ eq '*';
+    }
+
     method canonicalize-name(     $_) { $_ }
     method canonicalize-namespace($_) { $_ }
 }
