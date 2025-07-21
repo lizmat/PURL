@@ -24,6 +24,9 @@ say $purl;  # pkg:maven/org.apache.commons/io@1.3.4
 if PURL("pkg:maven/org.apache.commons/io@1.3.4") {
     say "Valid Package URL";
 }
+
+# Create from an identity string
+$purl = PURL.from-identity("PURL:ver<0.0.5>:auth<zef:lizmat>");
 ```
 
 DESCRIPTION
@@ -46,6 +49,8 @@ INSTANTIATION
 =============
 
 The `PURL` object is instantiated with the `.new` method and the Package URL as the only positional argument. It will throw an error if there is some type of problem with the Package URL.
+
+Alternately a `PURL` object can be instantiated from a Raku module identity with the `.from-identity` method.
 
 An instantiated object will stringify in the canonical version of the package URL.
 
