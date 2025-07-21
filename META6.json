@@ -6,7 +6,7 @@
   "build-depends": [
   ],
   "depends": [
-    "Identity::Utils:ver<0.0.19+>:auth<zef:lizmat>",
+    "Identity::Utils:ver<0.0.20+>:auth<zef:lizmat>",
     "JSON::Fast:ver<0.19+>:auth<cpan:TIMOTIMO>"
   ],
   "description": "Package URL specification v1.0.X",
@@ -28,5 +28,5 @@
   ],
   "test-depends": [
   ],
-  "version": "0.0.4"
+  "version": "0.0.5"
 }

@@ -36,7 +36,7 @@ my %examples := BEGIN {
 }
 
 #- PURL::Type ------------------------------------------------------------------
-class PURL::Type:ver<0.0.4>:auth<zef:lizmat> {
+class PURL::Type:ver<0.0.5>:auth<zef:lizmat> {
     method default-repository() { "" }
 
     method check-naming($, $ --> Nil) { }
