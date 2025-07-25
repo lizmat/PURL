@@ -1,12 +1,13 @@
 Revision history for PURL
 
 {{$NEXT}}
-    - Bump dependency on Identity::Utils because we can
+    - Bumped dependency on Identity::Utils because we can
     - Various tweaks and fixes + additional testing
-    - Actually document the "from-identity" method
+    - Actually documented the "from-identity" method
+    - Added sponsor + repository reference
 
 0.0.5  2025-07-21T13:22:28+02:00
-    - Bump dependency on Identity::Utils because we can
+    - Bumped dependency on Identity::Utils because we can
 
 0.0.4  2025-07-20T12:47:06+02:00
     - Made sure that gisting stringifies
