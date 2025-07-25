@@ -351,15 +351,26 @@ class PURL::qpkg is PURL::Type {
 #- R ---------------------------------------------------------------------------
 class PURL::raku is PURL::Type {
     method qualifier-keys() {
-        <download_url repository_url>
+        <download_url>
+    }
+
+    method check-naming($, $namespace) {
+        die "Namespace must start with 'zef:' or 'cpan:'"
+          if !$namespace.starts-with("zef:" | "cpan:");
     }
 
     method check-version($_) {
-        die "Version can not be '$_'" if $_ && $_ eq '*';
+        die "Must have a version specified" unless $_;
+        die "Version can not be '$_'" if $_ eq '*';
     }
 
-    method canonicalize-name(     $_) { $_ }
-    method canonicalize-namespace($_) { $_ }
+    method canonicalize-name($_) { $_ }
+
+    method canonicalize-namespace($_) {
+        .starts-with("cpan:")
+          ?? "cpan:" ~ .substr(5).uc
+          !! $_
+    }
 }
 
 class PURL::rpm is PURL::Type {
