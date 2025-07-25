@@ -1,6 +1,8 @@
 Revision history for PURL
 
 {{$NEXT}}
+
+0.0.6  2025-07-25T14:22:37+02:00
     - Bumped dependency on Identity::Utils because we can
     - Various tweaks and fixes + additional testing
     - Actually documented the "from-identity" method
