@@ -36,11 +36,10 @@ my %examples := BEGIN {
 }
 
 #- PURL::Type ------------------------------------------------------------------
-class PURL::Type:ver<0.0.6>:auth<zef:lizmat> {
+class PURL::Type:ver<0.0.7>:auth<zef:lizmat> {
     method default-repository() { "" }
 
-    method check-naming($, $ --> Nil) { }
-    method check-version(  $ --> Nil) { }
+    method check-identity($, $, $ --> Nil) { }
     method check-qualifier($ --> Nil) { }
     method check-subpath(  $ --> Nil) { }
 
@@ -118,7 +117,7 @@ class PURL::cocoapods is PURL::Type {
     method default-repository() {
         "https://cdn.cocoapods.org/"
     }
-    method check-naming($name, $ --> Nil) {
+    method check-identity($name, $, $ --> Nil) {
         die "Name '$name' not allowed to contain whitespace"
           if $name.contains(/ \s /);
         die "Name '$name' not allowed to contain '+'"
@@ -156,8 +155,10 @@ class PURL::cpan is PURL::Type {    # XXX
     method qualifier-keys() {
         <download_url ext repository_url vcs_url>
     }
-    method check-naming($name, $namespace --> Nil) {
+    method check-identity($name, $namespace, $version --> Nil) {
         if $namespace {
+            die "Refers to a Raku package on CPAN, please use 'pkg:raku/$namespace.substr(0,*-6)/$name@$version' instead"
+              if $namespace.ends-with("/Perl6");
             die "Namespace must consist of uppercase ascii only: '$namespace'"
               if $namespace.contains(/ <:lower> /);
             die "Name may not contain '::': '$name'"
@@ -182,10 +183,8 @@ class PURL::cran is PURL::Type {
     method qualifier-keys() {
         <build channel subdir type>
     }
-    method check-naming($, $namespace --> Nil) {
+    method check-identity($, $namespace, $version --> Nil) {
         die "Cannot have a namespace specified" if $namespace;
-    }
-    method check-version($version) {
         die "Must have a version specified" unless $version;
     }
     method canonicalize-name($_) { $_ }
@@ -196,7 +195,7 @@ class PURL::deb is PURL::Type {
     method qualifier-keys() {
         <arch distro repository_url>
     }
-    method check-naming($, $namespace --> Nil) {
+    method check-identity($, $namespace, $ --> Nil) {
         die "Must have a namespace specified" unless $namespace;
     }
 }
@@ -283,7 +282,7 @@ class PURL::mlflow is PURL::Type {
     method qualifier-keys() {
         <model_uuid run_id>
     }
-    method check-naming($, $namespace --> Nil) {
+    method check-naming($, $namespace, $ --> Nil) {
         die "Cannot have a namespace specified" if $namespace;
     }
     method check-qualifier($_ --> Nil) {
@@ -324,7 +323,7 @@ class PURL::pub is PURL::Type {
     method default-repository() {
         "https://pub.dartlang.org"
     }
-    method check-naming($name, $namespace --> Nil) {
+    method check-identity($name, $namespace, $ --> Nil) {
         die "Name may only consists of a-z, 0-9 and _: '$name'"
           if $name && $name.contains(/ <-[a..z 0..9 _]> /);
         die "Namespace may only consists of a-z, 0-9 and _: '$namespace'"
@@ -354,14 +353,11 @@ class PURL::raku is PURL::Type {
         <download_url>
     }
 
-    method check-naming($, $namespace) {
+    method check-identity($, $namespace, $version --> Nil) {
         die "Namespace must start with 'zef:' or 'cpan:'"
           if !$namespace.starts-with("zef:" | "cpan:");
-    }
-
-    method check-version($_) {
-        die "Must have a version specified" unless $_;
-        die "Version can not be '$_'" if $_ eq '*';
+        die "Must have a version specified" unless $version;
+        die "Version can not be '$version'" if $version eq '*';
     }
 
     method canonicalize-name($_) { $_ }
@@ -389,10 +385,8 @@ class PURL::swid is PURL::Type {
 }
 
 class PURL::swift is PURL::Type {
-    method check-naming($, $namespace) {
+    method check-identity($, $namespace, $version) {
         die "Must have a namespace specified" unless $namespace;
-    }
-    method check-version($version) {
         die "Must have a version specified" unless $version;
     }
     method canonicalize-name($_) { $_ }

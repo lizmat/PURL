@@ -2,6 +2,11 @@ Revision history for PURL
 
 {{$NEXT}}
 
+0.0.7  2025-07-26T16:10:06+02:00
+    - Disallow /Perl6 references in "cpan" Package URLs,
+      refer to the "raku" Package URL in error message.
+      Spotted by sjn++
+
 0.0.6  2025-07-25T14:22:37+02:00
     - Bumped dependency on Identity::Utils because we can
     - Various tweaks and fixes + additional testing

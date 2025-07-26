@@ -790,5 +790,17 @@
     "qualifiers": null,
     "subpath": null,
     "is_invalid": true
+  },
+  {
+    "description": "Raku dist using a cpan purl",
+    "purl": "pkg:cpan/TIMOTIMO/Perl6/JSON::Fast@0.19",
+    "canonical_purl": null,
+    "type": "cpan",
+    "namespace": null,
+    "name": "JSON::Fast",
+    "version": "0.19",
+    "qualifiers": null,
+    "subpath": null,
+    "is_invalid": true
   }
 ]

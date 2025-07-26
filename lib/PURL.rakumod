@@ -2,7 +2,7 @@ use Identity::Utils:ver<0.0.24+>:auth<zef:lizmat> <
   api auth is-pinned short-name ver
 >;
 use JSON::Fast:ver<0.19+>:auth<cpan:TIMOTIMO>;
-use PURL::Type:ver<0.0.6>:auth<zef:lizmat>;
+use PURL::Type:ver<0.0.7>:auth<zef:lizmat>;
 
 #- helper subroutines ----------------------------------------------------------
 
@@ -31,7 +31,7 @@ my sub decode(Str:D $_) {
 }
 
 #- PURL ------------------------------------------------------------------------
-class PURL:ver<0.0.6>:auth<zef:lizmat> {
+class PURL:ver<0.0.7>:auth<zef:lizmat> {
     has Str $.scheme is required;
     has Str $.type   is required;
     has Str $.name   is required;
@@ -121,8 +121,8 @@ class PURL:ver<0.0.6>:auth<zef:lizmat> {
 
             $remainder = $remainder.substr(0, $index);
         }
-        elsif $remainder {
-            $name = $remainder;
+        elsif $remainder {  # UNCOVERABLE
+            $name = $remainder;  # UNCOVERABLE
 
             $remainder = Str;
         }
@@ -150,8 +150,7 @@ class PURL:ver<0.0.6>:auth<zef:lizmat> {
             $customization .= new;
 
             # First do all of the checks
-            $customization.check-naming(|%args<name namespace>);
-            $customization.check-version(%args<version>);
+            $customization.check-identity(|%args<name namespace version>);
             with %args<qualifiers> -> %qualifiers {
                 $customization.check-qualifier($_) for %qualifiers;
             }
