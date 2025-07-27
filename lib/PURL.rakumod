@@ -17,8 +17,8 @@ my sub trim-slashes(Str:D $_) { .subst(/^ '/'+ /).subst(/ '/'+ $/) }
 # Quick-and-dirty percent-decode a string
 my sub encode(Str:D $_) {
   .subst:
-    / <-[a..z A..Z 0..9 _ ~ . : = / % -]> /,
-    '%' ~ *.ord.fmt('%02x'),
+    / <-[a..z A..Z 0..9 _ ~ . : = / % + -]> /,
+    '%' ~ *.ord.fmt('%02X'),
     :global
 }
 
@@ -32,16 +32,21 @@ my sub decode(Str:D $_) {
 
 #- PURL ------------------------------------------------------------------------
 class PURL:ver<0.0.7>:auth<zef:lizmat> {
-    has Str $.scheme is required;
-    has Str $.type   is required;
-    has Str $.name   is required;
+    has Str $.scheme = 'pkg';
+    has Str $.type is required;
+    has Str $.name;
     has Str $.namespace;
     has Str $.version;
     has Str %.qualifiers;
+    has Str @!qualifier-names is built;
 
     # Kept as an array as to be able to filter out components
     # when canonicalizing.
     has Str @.subpath;
+
+    submethod TWEAK() {
+        @!qualifier-names ||= %!qualifiers.keys.sort;
+    }
 
     # Create an argument hash for the given Package URL
     method !hashify(Str:D $spec) {
@@ -63,19 +68,18 @@ class PURL:ver<0.0.7>:auth<zef:lizmat> {
             $remainder = $spec;
         }
 
-        # qualifier
+        # qualifiers
         with $remainder.rindex("?") -> $index {
             my %seen;
+
+            %args<qualifier-names> := my @qualifier-names;  # UNCOVERABLE
             %args<qualifiers> = $remainder.substr($index + 1).split('&').map({
                 my ($key, $value) = .split("=", 2);
                 die "Invalid qualifier key: $key" unless is-identifier($key);
 
-                if $value {
-                    $value = decode $value;
-                    $key.lc => $key eq "checksum" | "checksums"
-                      ?? ($value = $value.split(",").List)
-                      !! $value
-                }
+                $key .= lc;
+                @qualifier-names.push($key);
+                $key => decode $value if $value;
             }).Map;
 
             $remainder = $remainder.substr(0, $index);
@@ -96,22 +100,16 @@ class PURL:ver<0.0.7>:auth<zef:lizmat> {
 
         # type
         with $remainder.index("/") -> $index {
-            my $type := $remainder.substr(0,$index);
+            my $type = $remainder.substr(0,$index);
             die "Invalid type: $type" unless is-identifier($type);
 
-            %args<type> = $type.lc;  # canonicalize now for later checks
+            $type .= lc;  # canonicalize now for later checks
+            %args<type> = $type;
 
             $remainder = $remainder.substr($index + 1);
         }
         else {
             die "Must have a type specified";
-        }
-
-        # version
-        with $remainder.rindex("@") -> $index {
-            %args<version> = decode $remainder.substr($index + 1);
-
-            $remainder = $remainder.substr(0, $index);
         }
 
         # name
@@ -128,14 +126,18 @@ class PURL:ver<0.0.7>:auth<zef:lizmat> {
         }
 
         if $name {
+
+            # version
+            with $name.rindex("@") -> $index {
+                %args<version> = decode $name.substr($index + 1);
+
+                $name = $name.substr(0, $index);
+            }
+
             $name = decode trim-slashes $name;
 
             %args<name> = $name;
         }
-        else {
-            die "Must have a name specified";
-        }
-
 
         # namespace
         if $remainder {
@@ -210,11 +212,11 @@ class PURL:ver<0.0.7>:auth<zef:lizmat> {
         $!scheme
           ~ ":" ~ self.type
           ~ ("/$_.split("/").map(&encode).join("/")" with self.namespace)
-          ~ "/&encode(self.name)"
+          ~ ("/&encode($_)"   with self.name)
           ~ ("@" ~ encode($_) with self.version)
-          ~ ("?%!qualifiers.sort(*.key).map({
+          ~ ("?" ~ (%!qualifiers{@!qualifier-names}:p).map({
                 .key ~ '=' ~ encode .value
-            }).join("&")" if %!qualifiers)
+            }).join("&") if %!qualifiers)
           ~ ("#@!subpath.map(&encode).join("/")"
               if @!subpath)
     }

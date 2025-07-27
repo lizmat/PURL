@@ -39,7 +39,9 @@ my %examples := BEGIN {
 class PURL::Type:ver<0.0.7>:auth<zef:lizmat> {
     method default-repository() { "" }
 
-    method check-identity($, $, $ --> Nil) { }
+    method check-identity($name, $, $ --> Nil) {
+        die "Must have a name specified" unless $name;
+    }
     method check-qualifier($ --> Nil) { }
     method check-subpath(  $ --> Nil) { }
 
@@ -118,6 +120,7 @@ class PURL::cocoapods is PURL::Type {
         "https://cdn.cocoapods.org/"
     }
     method check-identity($name, $, $ --> Nil) {
+        die "Must have a name specified" unless $name;
         die "Name '$name' not allowed to contain whitespace"
           if $name.contains(/ \s /);
         die "Name '$name' not allowed to contain '+'"
@@ -125,6 +128,8 @@ class PURL::cocoapods is PURL::Type {
         die "Name '$name' not allowed to contain '.'"
           if $name.contains('.');
     }
+
+    method canonicalize-name($_) { $_ }
 }
 
 class PURL::composer is PURL::Type {
@@ -183,7 +188,8 @@ class PURL::cran is PURL::Type {
     method qualifier-keys() {
         <build channel subdir type>
     }
-    method check-identity($, $namespace, $version --> Nil) {
+    method check-identity($name, $namespace, $version --> Nil) {
+        die "Must have a name specified"    unless $name;
         die "Cannot have a namespace specified" if $namespace;
         die "Must have a version specified" unless $version;
     }
@@ -195,7 +201,8 @@ class PURL::deb is PURL::Type {
     method qualifier-keys() {
         <arch distro repository_url>
     }
-    method check-identity($, $namespace, $ --> Nil) {
+    method check-identity($name, $namespace, $ --> Nil) {
+        die "Must have a name specified"      unless $name;
         die "Must have a namespace specified" unless $namespace;
     }
 }
@@ -282,7 +289,8 @@ class PURL::mlflow is PURL::Type {
     method qualifier-keys() {
         <model_uuid run_id>
     }
-    method check-naming($, $namespace, $ --> Nil) {
+    method check-identity($name, $namespace, $ --> Nil) {
+        die "Must have a name specified"    unless $name;
         die "Cannot have a namespace specified" if $namespace;
     }
     method check-qualifier($_ --> Nil) {
@@ -299,6 +307,7 @@ class PURL::npm is PURL::Type {
     method default-repository() {
         "https://registry.npmjs.org"
     }
+    method check-identity($, $, $ --> Nil) { }
 }
 
 class PURL::nuget is PURL::Type {
@@ -324,6 +333,7 @@ class PURL::pub is PURL::Type {
         "https://pub.dartlang.org"
     }
     method check-identity($name, $namespace, $ --> Nil) {
+        die "Must have a name specified" unless $name;
         die "Name may only consists of a-z, 0-9 and _: '$name'"
           if $name && $name.contains(/ <-[a..z 0..9 _]> /);
         die "Namespace may only consists of a-z, 0-9 and _: '$namespace'"
@@ -353,7 +363,8 @@ class PURL::raku is PURL::Type {
         <download_url>
     }
 
-    method check-identity($, $namespace, $version --> Nil) {
+    method check-identity($name, $namespace, $version --> Nil) {
+        die "Must have a name specified" unless $name;
         die "Namespace must start with 'zef:' or 'cpan:'"
           if !$namespace.starts-with("zef:" | "cpan:");
         die "Must have a version specified" unless $version;
@@ -382,12 +393,15 @@ class PURL::swid is PURL::Type {
         <download_url patch
          tag_creator_name tag_creator_regid tag_id tag_version>
     }
+    method canonicalize-name($_) { $_ }
+    method canonicalize-namespace($_) { $_ }
 }
 
 class PURL::swift is PURL::Type {
-    method check-identity($, $namespace, $version) {
+    method check-identity($name, $namespace, $version) {
+        die "Must have a name specified"      unless $name;
         die "Must have a namespace specified" unless $namespace;
-        die "Must have a version specified" unless $version;
+        die "Must have a version specified"   unless $version;
     }
     method canonicalize-name($_) { $_ }
     method canonicalize-namespace($_) { $_ }
