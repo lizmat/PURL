@@ -1,6 +1,11 @@
 Revision history for PURL
 
 {{$NEXT}}
+    - Added dependency on "URI::encode" to get proper
+      URI encoding / decoding
+    - Converted all test-suite tests to the new format
+      provided by the purl-spec repo
+    - Added raku specific tests
 
 0.0.7  2025-07-26T16:10:06+02:00
     - Disallow /Perl6 references in "cpan" Package URLs,

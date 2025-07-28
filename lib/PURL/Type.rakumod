@@ -367,8 +367,6 @@ class PURL::raku is PURL::Type {
         die "Must have a name specified" unless $name;
         die "Namespace must start with 'zef:' or 'cpan:'"
           if !$namespace.starts-with("zef:" | "cpan:");
-        die "Must have a version specified" unless $version;
-        die "Version can not be '$version'" if $version eq '*';
     }
 
     method canonicalize-name($_) { $_ }

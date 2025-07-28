@@ -2,6 +2,8 @@ use Identity::Utils:ver<0.0.24+>:auth<zef:lizmat> <
   api auth is-pinned short-name ver
 >;
 use JSON::Fast:ver<0.19+>:auth<cpan:TIMOTIMO>;
+use URI::Encode:ver<1.0+>:auth<zef:raku-community-modules>;
+
 use PURL::Type:ver<0.0.7>:auth<zef:lizmat>;
 
 #- helper subroutines ----------------------------------------------------------
@@ -13,22 +15,6 @@ my sub is-identifier($_) {
 
 # Trim leading and trailing
 my sub trim-slashes(Str:D $_) { .subst(/^ '/'+ /).subst(/ '/'+ $/) }
-
-# Quick-and-dirty percent-decode a string
-my sub encode(Str:D $_) {
-  .subst:
-    / <-[a..z A..Z 0..9 _ ~ . : = / % + -]> /,
-    '%' ~ *.ord.fmt('%02X'),
-    :global
-}
-
-# Quick-and-dirty percent-decode a string
-my sub decode(Str:D $_) {
-  .subst:
-    / '%' <[0..9 a..f A..F]> ** 2 /,
-    *.substr(1).parse-base(16).chr,
-    :global
-}
 
 #- PURL ------------------------------------------------------------------------
 class PURL:ver<0.0.7>:auth<zef:lizmat> {
@@ -57,8 +43,8 @@ class PURL:ver<0.0.7>:auth<zef:lizmat> {
         with $spec.rindex("#") -> $index {
             %args<subpath> = $spec.substr($index + 1).split("/").map({
                 if $_ {
-                    my $decode = decode($_);
-                    $decode unless $decode eq '.' | '..';
+                    my $decoded = uri_decode($_);
+                    $decoded unless $decoded eq '.' | '..';
                 }
             }).List;
 
@@ -79,7 +65,7 @@ class PURL:ver<0.0.7>:auth<zef:lizmat> {
 
                 $key .= lc;
                 @qualifier-names.push($key);
-                $key => decode $value if $value;
+                $key => uri_decode $value if $value;
             }).Map;
 
             $remainder = $remainder.substr(0, $index);
@@ -129,12 +115,12 @@ class PURL:ver<0.0.7>:auth<zef:lizmat> {
 
             # version
             with $name.rindex("@") -> $index {
-                %args<version> = decode $name.substr($index + 1);
+                %args<version> = uri_decode $name.substr($index + 1);
 
                 $name = $name.substr(0, $index);
             }
 
-            $name = decode trim-slashes $name;
+            $name = uri_decode trim-slashes $name;
 
             %args<name> = $name;
         }
@@ -142,11 +128,15 @@ class PURL:ver<0.0.7>:auth<zef:lizmat> {
         # namespace
         if $remainder {
             %args<namespace> = $remainder.split("/").map({
-                decode $_ if $_
+                uri_decode $_ if $_
             }).join("/");
         }
 
-        # Do all additional custom chekcs and value customizations
+        check-and-canonicalize %args
+    }
+
+    # Do all additional custom checks and value customizations
+    my sub check-and-canonicalize(%args) {
         my $customization = PURL::Type(%args<type>);
         unless $customization ~~ Failure {
             $customization .= new;
@@ -156,8 +146,8 @@ class PURL:ver<0.0.7>:auth<zef:lizmat> {
             with %args<qualifiers> -> %qualifiers {
                 $customization.check-qualifier($_) for %qualifiers;
             }
-            with %args<subpath> -> @parts {
-                $customization.check-subpath($_) for @parts;
+            with %args<subpath> -> $parts {
+                $customization.check-subpath($_) for $parts;
             }
 
             # Then do all the canonicalizations
@@ -172,8 +162,8 @@ class PURL:ver<0.0.7>:auth<zef:lizmat> {
                     $customization.canonicalize-qualifier($_)
                 }).Map
             }
-            with %args<subpath> -> @parts {
-                %args<subpath> := @parts.map({
+            with %args<subpath> -> $parts {
+                %args<subpath> := $parts.map({
                     $customization.canonicalize-subpath($_)
                 }).List;
             }
@@ -182,6 +172,9 @@ class PURL:ver<0.0.7>:auth<zef:lizmat> {
         %args
     }
 
+    multi method new(PURL:) {
+        self.bless: |check-and-canonicalize %_
+    }
     multi method new(PURL: Str:D $spec) {
         self.bless: |self!hashify($spec)
     }
@@ -195,7 +188,7 @@ class PURL:ver<0.0.7>:auth<zef:lizmat> {
           type      => "raku",
           namespace => auth($id),
           name      => short-name($id),
-          version   => ver($id) ~ ("/$_" with api($id))
+          version   => ver($id) ~ (":$_" with api($id))
         ;
         %spec{.key} = .value for %_;
 
@@ -211,13 +204,13 @@ class PURL:ver<0.0.7>:auth<zef:lizmat> {
     multi method Str(PURL:D:) {
         $!scheme
           ~ ":" ~ self.type
-          ~ ("/$_.split("/").map(&encode).join("/")" with self.namespace)
-          ~ ("/&encode($_)"   with self.name)
-          ~ ("@" ~ encode($_) with self.version)
+          ~ ("/$_.split("/").map(&uri_encode).join("/")" with self.namespace)
+          ~ ("/&uri_encode($_)"   with self.name)
+          ~ ("@" ~ uri_encode($_) with self.version)
           ~ ("?" ~ (%!qualifiers{@!qualifier-names}:p).map({
-                .key ~ '=' ~ encode .value
+                .key ~ '=' ~ uri_encode .value
             }).join("&") if %!qualifiers)
-          ~ ("#@!subpath.map(&encode).join("/")"
+          ~ ("#@!subpath.map(&uri_encode).join("/")"
               if @!subpath)
     }
     multi method gist(PURL:D:) { self.Str }

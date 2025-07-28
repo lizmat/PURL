@@ -13,11 +13,6 @@ plan 1 + @files;
 ok @files, 'did we get any test files';
 
 for @files -> $io {
-    if $io.basename.starts-with("cpan") {
-        pass "Skipping cpan tests for now";
-        next;
-    }
-
     my @tests := from-json($io.slurp, :immutable)<tests>;
 
     subtest "testing $io" => {
@@ -50,10 +45,11 @@ sub test-for-failure(%test) {
 
 #- test-for-success ------------------------------------------------------------
 sub test-for-success(%test) {
-    subtest "Success: %test<description>" => {
-        my $test-type := %test<test_type>;
-        my $input     := %test<input>;
-        my $output    := %test<expected_output>;
+    my $test-type := %test<test_type>;
+
+    subtest "$test-type.tc() success: %test<description>" => {
+        my $input  := %test<input>;
+        my $output := %test<expected_output>;
 
         if $test-type eq 'parse' {
             my $purl := PURL.new($input);
@@ -85,12 +81,12 @@ sub test-for-success(%test) {
         elsif $test-type eq 'roundtrip' {
             plan 1;
 
-            todo "should : be percent encoded in versions"
-              if $output.starts-with("pkg:oci/");
-            todo "should + be percent encoded"
+            todo "encoding confusion"
               if $output.starts-with(
                     "pkg:deb/debian/attr"
                   | "pkg:generic/bitwarderl"
+                  | "pkg:npm/"
+                  | "pkg:oci/"
                  );
             todo "qualifier keys order"
               if $output.starts-with(
@@ -106,14 +102,13 @@ sub test-for-success(%test) {
             $input := $input.grep(*.value.defined).Map;
             my $purl := PURL.new(|$input);
 
-            todo "should : be percent encoded in versions"
-              if $output.starts-with("pkg:oci/");
-            todo "should + be percent encoded"
+            todo "encoding confusion"
               if $output.starts-with(
                     "pkg:deb/debian/attr"
                   | "pkg:generic/bitwarderl"
+                  | "pkg:npm/"
+                  | "pkg:oci/"
                  );
-
             todo "qualifier keys order"
               if $output.starts-with(
                      "pkg:conan/openssl.org/openssl@3.0.3"

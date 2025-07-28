@@ -7,7 +7,8 @@
   ],
   "depends": [
     "Identity::Utils:ver<0.0.24+>:auth<zef:lizmat>",
-    "JSON::Fast:ver<0.19+>:auth<cpan:TIMOTIMO>"
+    "JSON::Fast:ver<0.19+>:auth<cpan:TIMOTIMO>",
+    "URI::Encode:ver<1.0+>:auth<zef:raku-community-modules>"
   ],
   "description": "Package URL specification v1.0.X",
   "license": "Artistic-2.0",
