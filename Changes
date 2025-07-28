@@ -1,6 +1,8 @@
 Revision history for PURL
 
 {{$NEXT}}
+    - Changed API value in version from "/" to ":" to
+      be more in line with other PURL version specifications
     - Added dependency on "URI::encode" to get proper
       URI encoding / decoding
     - Converted all test-suite tests to the new format

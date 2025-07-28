@@ -49,7 +49,7 @@ for @identities -> $identity {
         is $purl.name, short-name($identity), 'is name correct';
 
         is $purl.version,
-          ver($identity) ~ ("/$_" with api($identity)),
+          ver($identity) ~ (":$_" with api($identity)),
           'is version correct';
     }
 }
