@@ -138,7 +138,10 @@ class PURL:ver<0.0.8>:auth<zef:lizmat> {
     # Do all additional custom checks and value customizations
     my sub check-and-canonicalize(%args) {
         my $customization = PURL::Type(%args<type>);
-        unless $customization ~~ Failure {
+        if $customization ~~ Failure {
+            $customization.Bool;  # prevent messages on DESTROY
+        }
+        else {
             $customization .= new;
 
             # First do all of the checks
