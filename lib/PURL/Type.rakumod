@@ -36,7 +36,7 @@ my %examples := BEGIN {
 }
 
 #- PURL::Type ------------------------------------------------------------------
-class PURL::Type:ver<0.0.7>:auth<zef:lizmat> {
+class PURL::Type:ver<0.0.8>:auth<zef:lizmat> {
     method default-repository() { "" }
 
     method check-identity($name, $, $ --> Nil) {
