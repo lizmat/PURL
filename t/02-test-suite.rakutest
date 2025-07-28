@@ -88,12 +88,6 @@ sub test-for-success(%test) {
                   | "pkg:npm/"
                   | "pkg:oci/"
                  );
-            todo "qualifier keys order"
-              if $output.starts-with(
-                    "pkg:maven/org.apache.xmlgraphics"
-                  | "pkg:mlflow/trafficsigns@10"
-                  | "pkg:rpm/centerim"
-              );
             is PURL.new($input), $output, 'is roundtrip correct';
         }
         elsif $test-type eq 'build' {
@@ -109,14 +103,6 @@ sub test-for-success(%test) {
                   | "pkg:npm/"
                   | "pkg:oci/"
                  );
-            todo "qualifier keys order"
-              if $output.starts-with(
-                     "pkg:conan/openssl.org/openssl@3.0.3"
-                   | "pkg:generic/openssl@1.1.10g"
-                   | "pkg:maven/org.apache.xmlgraphics"
-                   | "pkg:mlflow/trafficsigns@10"
-                   | "pkg:rpm/centerim"
-              );
             is $purl, $output, 'did the build succeed';
         }
         else {

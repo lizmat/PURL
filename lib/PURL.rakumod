@@ -24,15 +24,10 @@ class PURL:ver<0.0.8>:auth<zef:lizmat> {
     has Str $.namespace;
     has Str $.version;
     has Str %.qualifiers;
-    has Str @!qualifier-names is built;
 
     # Kept as an array as to be able to filter out components
     # when canonicalizing.
     has Str @.subpath;
-
-    submethod TWEAK() {
-        @!qualifier-names ||= %!qualifiers.keys.sort;
-    }
 
     # Create an argument hash for the given Package URL
     method !hashify(Str:D $spec) {
@@ -58,13 +53,11 @@ class PURL:ver<0.0.8>:auth<zef:lizmat> {
         with $remainder.rindex("?") -> $index {
             my %seen;
 
-            %args<qualifier-names> := my @qualifier-names;  # UNCOVERABLE
             %args<qualifiers> = $remainder.substr($index + 1).split('&').map({
                 my ($key, $value) = .split("=", 2);
                 die "Invalid qualifier key: $key" unless is-identifier($key);
 
                 $key .= lc;
-                @qualifier-names.push($key);
                 $key => uri_decode $value if $value;
             }).Map;
 
@@ -210,9 +203,9 @@ class PURL:ver<0.0.8>:auth<zef:lizmat> {
           ~ ("/$_.split("/").map(&uri_encode).join("/")" with self.namespace)
           ~ ("/&uri_encode($_)"   with self.name)
           ~ ("@" ~ uri_encode($_) with self.version)
-          ~ ("?" ~ (%!qualifiers{@!qualifier-names}:p).map({
+          ~ ("?%!qualifiers.sort(*.key).map({
                 .key ~ '=' ~ uri_encode .value
-            }).join("&") if %!qualifiers)
+            }).join("&")" if %!qualifiers)
           ~ ("#@!subpath.map(&uri_encode).join("/")"
               if @!subpath)
     }
