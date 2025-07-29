@@ -175,16 +175,28 @@ class PURL:ver<0.0.8>:auth<zef:lizmat> {
         self.bless: |self!hashify($spec)
     }
 
-    method from-identity(PURL: Str:D $id) {
+    method from-identity(PURL: Str:D $id, :$must-be-pinned) {
         die "Impossible to create PURL from '$id' because it is not pinned."
-          unless is-pinned($id);
+          if $must-be-pinned && !is-pinned($id);
+
+        # If there is no version, but there is an API, make sure the
+        # fallback all versions "*" is specified.  Otherwise, if there
+        # is a version, remove the version spec at all if it is "any
+        # version" already.
+        my Str $version = ver($id);
+        with api($id) -> $api {
+            $version = ($version // "*") ~ ":$api";
+        }
+        elsif $version {  # UNCOVERABLE
+            $version = Str if $version eq '*';
+        }
 
         my %spec =
           scheme    => "pkg",
           type      => "raku",
-          namespace => auth($id),
+          (namespace => $_ with auth($id)),
           name      => short-name($id),
-          version   => ver($id) ~ (":$_" with api($id))
+          version   => $version,
         ;
         %spec{.key} = .value for %_;
 

@@ -1,6 +1,10 @@
 Revision history for PURL
 
 {{$NEXT}}
+    - Make .from-identity accept unpinned dependencies
+      by default, because these will be needed to allow
+      for requirement indications.  Added a :must-be-pinned
+      named argument to obtain the old behaviour
     - Disarm PURL::Type() failures for quieter testing
 
 0.0.8  2025-07-28T13:51:33+02:00
