@@ -1,6 +1,8 @@
 Revision history for PURL
 
 {{$NEXT}}
+
+0.0.9  2025-07-29T14:45:33+02:00
     - Make .from-identity accept unpinned dependencies
       by default, because these will be needed to allow
       for requirement indications.  Added a :must-be-pinned
