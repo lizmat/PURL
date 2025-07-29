@@ -61,7 +61,7 @@ class PURL:ver<0.0.8>:auth<zef:lizmat> {
                 $key => uri_decode $value if $value;
             }).Map;
 
-            $remainder = $remainder.substr(0, $index);
+            $remainder .= substr(0, $index);
         }
 
         # scheme
@@ -69,7 +69,7 @@ class PURL:ver<0.0.8>:auth<zef:lizmat> {
             %args<scheme> := $remainder.substr(0,$index);
 
             die "Scheme must be 'pkg'" unless %args<scheme> eq 'pkg';
-            $remainder = $remainder.substr($index + 1);
+            $remainder .= substr($index + 1);
         }
         else {
             die "Must have a scheme specified";
@@ -85,10 +85,17 @@ class PURL:ver<0.0.8>:auth<zef:lizmat> {
             $type .= lc;  # canonicalize now for later checks
             %args<type> = $type;
 
-            $remainder = $remainder.substr($index + 1);
+            $remainder .= substr($index + 1);
         }
         else {
             die "Must have a type specified";
+        }
+
+        # version
+        with $remainder.rindex("@") -> $index {
+            %args<version> = uri_decode $remainder.substr($index + 1);
+
+            $remainder .= substr(0, $index);
         }
 
         # name
@@ -96,7 +103,7 @@ class PURL:ver<0.0.8>:auth<zef:lizmat> {
         with $remainder.rindex("/") -> $index {
             $name = $remainder.substr($index + 1);
 
-            $remainder = $remainder.substr(0, $index);
+            $remainder .= substr(0, $index);
         }
         elsif $remainder {  # UNCOVERABLE
             $name = $remainder;  # UNCOVERABLE
@@ -105,13 +112,6 @@ class PURL:ver<0.0.8>:auth<zef:lizmat> {
         }
 
         if $name {
-
-            # version
-            with $name.rindex("@") -> $index {
-                %args<version> = uri_decode $name.substr($index + 1);
-
-                $name = $name.substr(0, $index);
-            }
 
             $name = uri_decode trim-slashes $name;
 
