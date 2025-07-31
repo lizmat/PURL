@@ -1,6 +1,12 @@
 Revision history for PURL
 
 {{$NEXT}}
+    - Added special handling for "sw_vers" qualifiers,
+      which should be valid VERS specifications
+    - Added dependency on VERS
+    - Fixed an issue in checking for absence of namespace
+      for the "raku" type
+    - Bumped dependency on Identity::Utils because we can
 
 0.0.9  2025-07-29T14:45:33+02:00
     - Make .from-identity accept unpinned dependencies

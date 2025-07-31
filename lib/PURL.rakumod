@@ -1,8 +1,9 @@
-use Identity::Utils:ver<0.0.24+>:auth<zef:lizmat> <
+use Identity::Utils:ver<0.0.25+>:auth<zef:lizmat> <
   api auth is-pinned short-name ver
 >;
 use JSON::Fast:ver<0.19+>:auth<cpan:TIMOTIMO>;
 use URI::Encode:ver<1.0+>:auth<zef:raku-community-modules>;
+use VERS:ver<0.0.1+>:auth<zef:lizmat>;
 
 use PURL::Type:ver<0.0.9>:auth<zef:lizmat>;
 
@@ -23,7 +24,7 @@ class PURL:ver<0.0.9>:auth<zef:lizmat> {
     has Str $.name;
     has Str $.namespace;
     has Str $.version;
-    has Str %.qualifiers;
+    has     %.qualifiers;
 
     # Kept as an array as to be able to filter out components
     # when canonicalizing.
@@ -58,7 +59,14 @@ class PURL:ver<0.0.9>:auth<zef:lizmat> {
                 die "Invalid qualifier key: $key" unless is-identifier($key);
 
                 $key .= lc;
-                $key => uri_decode $value if $value;
+                if $value {
+                    $value = uri_decode $value;
+                    if $key eq 'sw_vers' {
+                        die "'$value' is not a valid VERS specification"
+                          unless try $value = VERS.new($value);
+                    }
+                    $key => $value
+                }
             }).Map;
 
             $remainder .= substr(0, $index);
@@ -211,12 +219,12 @@ class PURL:ver<0.0.9>:auth<zef:lizmat> {
 
     multi method Str(PURL:D:) {
         $!scheme
-          ~ ":" ~ self.type
+          ~ ":$!type"
           ~ ("/$_.split("/").map(&uri_encode).join("/")" with self.namespace)
-          ~ ("/&uri_encode($_)"   with self.name)
+          ~ "/&uri_encode($!name)"
           ~ ("@" ~ uri_encode($_) with self.version)
           ~ ("?%!qualifiers.sort(*.key).map({
-                .key ~ '=' ~ uri_encode .value
+                .key ~ '=' ~ uri_encode .value.Str
             }).join("&")" if %!qualifiers)
           ~ ("#@!subpath.map(&uri_encode).join("/")"
               if @!subpath)
