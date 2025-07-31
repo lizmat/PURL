@@ -1,6 +1,8 @@
 Revision history for PURL
 
 {{$NEXT}}
+
+0.0.12  2025-07-31T21:05:10+02:00
     - Modernized the META6.json
     - Added the "VERS" method to return any associated
       VERS object

@@ -126,6 +126,19 @@ subpath
 
 The subpath of tha package specification.
 
+OTHER METHODS
+=============
+
+VERS
+----
+
+```raku
+my $purl = PURL.new("pkg:raku/zef:lizmat/PURL?sw_vers=vers:raku/<2.0|>=1.0");
+say $purl.VERS;  # vers:raku/>=1.10 | <2.0
+```
+
+Returns the associated `VERS` object if there is any (as specified by the "sw_vers" qualifier key). Returns `Nil` if none found.
+
 SUPPORTED TYPES
 ===============
 

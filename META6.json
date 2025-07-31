@@ -19,19 +19,20 @@
   "license": "Artistic-2.0",
   "name": "PURL",
   "perl": "6.d",
-  "raku": "6.d",
   "production": true,
   "provides": {
     "PURL": "lib/PURL.rakumod",
     "PURL::Type": "lib/PURL/Type.rakumod"
   },
+  "raku": "6.d",
   "resources": [
     "known-types",
     "examples"
   ],
+  "source-url": "https://github.com/lizmat/PURL.git",
   "support": {
-    "email": "liz@raku.rocks",
     "bugtracker": "https://github.com/lizmat/SBOM-Raku/issues",
+    "email": "liz@raku.rocks",
     "source": "https://github.com/lizmat/PURL.git"
   },
   "tags": [
