@@ -1,6 +1,8 @@
 Revision history for PURL
 
 {{$NEXT}}
+
+0.0.10  2025-07-31T18:51:01+02:00
     - Added special handling for "sw_vers" qualifiers,
       which should be valid VERS specifications
     - Added dependency on VERS
