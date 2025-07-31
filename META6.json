@@ -5,16 +5,22 @@
   ],
   "build-depends": [
   ],
-  "depends": [
-    "Identity::Utils:ver<0.0.25+>:auth<zef:lizmat>",
-    "JSON::Fast:ver<0.19+>:auth<cpan:TIMOTIMO>",
-    "URI::Encode:ver<1.0+>:auth<zef:raku-community-modules>",
-    "VERS:ver<0.0.1+>:auth<zef:lizmat>"
-  ],
+  "depends": {
+    "runtime": {
+      "requires": [
+        "Identity::Utils:ver<0.0.25+>:auth<zef:lizmat>",
+        "JSON::Fast:ver<0.19+>:auth<cpan:TIMOTIMO>",
+        "URI::Encode:ver<1.0+>:auth<zef:raku-community-modules>",
+        "VERS:ver<0.0.1+>:auth<zef:lizmat>"
+      ]
+    }
+  },
   "description": "Package URL specification v1.0.X",
   "license": "Artistic-2.0",
   "name": "PURL",
   "perl": "6.d",
+  "raku": "6.d",
+  "production": true,
   "provides": {
     "PURL": "lib/PURL.rakumod",
     "PURL::Type": "lib/PURL/Type.rakumod"
@@ -23,7 +29,11 @@
     "known-types",
     "examples"
   ],
-  "source-url": "https://github.com/lizmat/PURL.git",
+  "support": {
+    "email": "liz@raku.rocks",
+    "bugtracker": "https://github.com/lizmat/SBOM-Raku/issues",
+    "source": "https://github.com/lizmat/PURL.git"
+  },
   "tags": [
     "PURL",
     "SBOM"
