@@ -1,6 +1,8 @@
 Revision history for PURL
 
 {{$NEXT}}
+    - Add the "VERS" method to return any VERS object
+      associated
 
 0.0.11  2025-07-31T19:35:17+02:00
     - Fixed dependency on URI::Encode that went AWOL

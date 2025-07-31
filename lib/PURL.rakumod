@@ -5,7 +5,7 @@ use JSON::Fast:ver<0.19+>:auth<cpan:TIMOTIMO>;
 use URI::Encode:ver<1.0+>:auth<zef:raku-community-modules>;
 use VERS:ver<0.0.1+>:auth<zef:lizmat>;
 
-use PURL::Type:ver<0.0.11>:auth<zef:lizmat>;
+use PURL::Type:ver<0.0.12>:auth<zef:lizmat>;
 
 #- helper subroutines ----------------------------------------------------------
 
@@ -18,13 +18,13 @@ my sub is-identifier($_) {
 my sub trim-slashes(Str:D $_) { .subst(/^ '/'+ /).subst(/ '/'+ $/) }
 
 #- PURL ------------------------------------------------------------------------
-class PURL:ver<0.0.11>:auth<zef:lizmat> {
+class PURL:ver<0.0.12>:auth<zef:lizmat> {
     has Str $.scheme = 'pkg';
     has Str $.type is required;
     has Str $.name;
     has Str $.namespace;
     has Str $.version;
-    has     %.qualifiers;
+    has     %.qualifiers is default(Nil);
 
     # Kept as an array as to be able to filter out components
     # when canonicalizing.
@@ -232,6 +232,8 @@ class PURL:ver<0.0.11>:auth<zef:lizmat> {
     multi method gist(PURL:D:) { self.Str }
 
     method CALL-ME(Str:D $spec --> Bool:D) { (try self!hashify($spec)).Bool }
+
+    method VERS(PURL:D:) { %!qualifiers<sw_vers> }
 }
 
 # vim: expandtab shiftwidth=4

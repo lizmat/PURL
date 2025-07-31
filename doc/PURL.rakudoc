@@ -125,6 +125,18 @@ The qualifiers of the package specification.
 
 The subpath of tha package specification.
 
+=head1 OTHER METHODS
+
+=head2 VERS
+
+=begin code :lang<raku>
+my $purl = PURL.new("pkg:raku/zef:lizmat/PURL?sw_vers=vers:raku/<2.0|>=1.0");
+say $purl.VERS;  # vers:raku/>=1.10 | <2.0
+=end code
+
+Returns the associated C<VERS> object if there is any (as specified
+by the "sw_vers" qualifier key).  Returns C<Nil> if none found.
+
 =head1 SUPPORTED TYPES
 
 The C<PURL::Type> class allows for various types of introspection.
