@@ -61,7 +61,7 @@ class PURL:ver<0.0.12>:auth<zef:lizmat> {
                 $key .= lc;
                 if $value {
                     $value = uri_decode $value;
-                    if $key eq 'sw_vers' {
+                    if $key eq 'vers' {
                         die "'$value' is not a valid VERS specification"
                           unless try $value = VERS.new($value);
                     }
@@ -233,7 +233,7 @@ class PURL:ver<0.0.12>:auth<zef:lizmat> {
 
     method CALL-ME(Str:D $spec --> Bool:D) { (try self!hashify($spec)).Bool }
 
-    method VERS(PURL:D:) { %!qualifiers<sw_vers> }
+    method VERS(PURL:D:) { %!qualifiers<vers> }
 }
 
 # vim: expandtab shiftwidth=4

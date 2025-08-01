@@ -130,12 +130,12 @@ The subpath of tha package specification.
 =head2 VERS
 
 =begin code :lang<raku>
-my $purl = PURL.new("pkg:raku/zef:lizmat/PURL?sw_vers=vers:raku/<2.0|>=1.0");
+my $purl = PURL.new("pkg:raku/zef:lizmat/PURL?vers=vers:raku/<2.0|>=1.0");
 say $purl.VERS;  # vers:raku/>=1.10 | <2.0
 =end code
 
 Returns the associated C<VERS> object if there is any (as specified
-by the "sw_vers" qualifier key).  Returns C<Nil> if none found.
+by the "vers" qualifier key).  Returns C<Nil> if none found.
 
 =head1 SUPPORTED TYPES
 

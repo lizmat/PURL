@@ -69,13 +69,13 @@ is PURL.from-identity("PURL:api<2>"), 'pkg:raku/PURL@*:2',
 dies-ok { PURL.from-identity("PURL", :must-be-pinned) },
   'throws when an unpinned identity is given, and it must be pinned';
 
-$purl = PURL.new("pkg:raku/zef:lizmat/PURL?sw_vers=vers:raku/<2.0|>=1.0");
+$purl = PURL.new("pkg:raku/zef:lizmat/PURL?vers=vers:raku/<2.0|>=1.0");
 is $purl,
-  "pkg:raku/zef:lizmat/PURL?sw_vers=vers:raku/%3E=1.0%20%7C%20%3C2.0",
+  "pkg:raku/zef:lizmat/PURL?vers=vers:raku/%3E=1.0%20%7C%20%3C2.0",
   "did the software version get canonicalized correctly";
 is $purl.VERS, "vers:raku/>=1.0 | <2.0", 'is the VERS correct';
 
-is-deeply PURL("pkg:raku/zef:lizmat/PURL?sw_vers=foo"), False,
-  "does an illegal sw_vers value invalidate a PURL";
+is-deeply PURL("pkg:raku/zef:lizmat/PURL?vers=foo"), False,
+  "does an illegal vers value invalidate a PURL";
 
 # vim: expandtab shiftwidth=4
