@@ -3,9 +3,9 @@ use Identity::Utils:ver<0.0.25+>:auth<zef:lizmat> <
 >;
 use JSON::Fast:ver<0.19+>:auth<cpan:TIMOTIMO>;
 use URI::Encode:ver<1.0+>:auth<zef:raku-community-modules>;
-use VERS:ver<0.0.1+>:auth<zef:lizmat>;
+use VERS:ver<0.0.2+>:auth<zef:lizmat>;
 
-use PURL::Type:ver<0.0.12>:auth<zef:lizmat>;
+use PURL::Type:ver<0.0.13>:auth<zef:lizmat>;
 
 #- helper subroutines ----------------------------------------------------------
 
@@ -18,7 +18,7 @@ my sub is-identifier($_) {
 my sub trim-slashes(Str:D $_) { .subst(/^ '/'+ /).subst(/ '/'+ $/) }
 
 #- PURL ------------------------------------------------------------------------
-class PURL:ver<0.0.12>:auth<zef:lizmat> {
+class PURL:ver<0.0.13>:auth<zef:lizmat> {
     has Str $.scheme = 'pkg';
     has Str $.type is required;
     has Str $.name;
@@ -102,6 +102,9 @@ class PURL:ver<0.0.12>:auth<zef:lizmat> {
         # version
         with $remainder.rindex("@") -> $index {
             %args<version> = uri_decode $remainder.substr($index + 1);
+
+            die "Cannot have a version (%args<version>) and a VERS ($_)"
+              with %args<qualifiers> andthen .<vers>;
 
             $remainder .= substr(0, $index);
         }

@@ -1,6 +1,8 @@
 Revision history for PURL
 
 {{$NEXT}}
+    - Disallowed simultaneous @version and ?vers=vers:...
+    - Bumped dependency on VERS to get correct canonicalization
     - Changed qualifier key "sw_vers" to "vers", as that
       appears to be canon now
 

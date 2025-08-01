@@ -10,7 +10,7 @@ my @identities = <
   Cro::RPC::JSON:ver<0.1.6>:auth<zef:vrurg>:api<2>
 >;
 
-plan 25 + @identities;
+plan 26 + @identities;
 
 my $purl = PURL.new("pkg:maven/org.apache.commons/io@1.3.4");
 isa-ok $purl, PURL;
@@ -68,12 +68,14 @@ is PURL.from-identity("PURL:api<2>"), 'pkg:raku/PURL@*:2',
 
 dies-ok { PURL.from-identity("PURL", :must-be-pinned) },
   'throws when an unpinned identity is given, and it must be pinned';
+dies-ok { PURL.new("pkg:raku/zef:foo/Bar@1?vers=vers:raku/1") },
+  'throws when a version and a VERS are specified';
 
-$purl = PURL.new("pkg:raku/zef:lizmat/PURL?vers=vers:raku/<2.0|>=1.0");
+$purl = PURL.new("pkg:raku/zef:lizmat/PURL?vers=vers:raku/<2.0 | >=1.0");
 is $purl,
-  "pkg:raku/zef:lizmat/PURL?vers=vers:raku/%3E=1.0%20%7C%20%3C2.0",
+  "pkg:raku/zef:lizmat/PURL?vers=vers:raku/%3E=1.0%7C%3C2.0",
   "did the software version get canonicalized correctly";
-is $purl.VERS, "vers:raku/>=1.0 | <2.0", 'is the VERS correct';
+is $purl.VERS, "vers:raku/>=1.0|<2.0", 'is the VERS correct';
 
 is-deeply PURL("pkg:raku/zef:lizmat/PURL?vers=foo"), False,
   "does an illegal vers value invalidate a PURL";
