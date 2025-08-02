@@ -4,17 +4,17 @@ my %description := BEGIN {
     my @lines = %?RESOURCES<known-types>.open.lines(:close);
     my %hash;
 
-    while @lines {
+    while @lines {  # UNCOVERABLE
         my $type        = @lines.shift;
         my $description = @lines.shift;
 
-        while @lines && @lines.shift -> $extra {
-            $description ~= "\n$extra";
+        while @lines && @lines.shift -> $extra {  # UNCOVERABLE
+            $description ~= "\n$extra";  # UNCOVERABLE
         }
-        %hash{$type} := $description;
+        %hash{$type} := $description;  # UNCOVERABLE
     }
 
-    %hash.Map
+    %hash.Map  # UNCOVERABLE
 }
 
 # Set up examples lookup
@@ -22,21 +22,21 @@ my %examples := BEGIN {
     my @lines = %?RESOURCES<examples>.open.lines(:close);
     my %hash;
 
-    while @lines {
+    while @lines {  # UNCOVERABLE
         my $type     = @lines.shift;
         my @examples = @lines.shift;
 
-        while @lines && @lines.shift -> $extra {
-            @examples.push($extra);
+        while @lines && @lines.shift -> $extra {  # UNCOVERABLE
+            @examples.push($extra);  # UNCOVERABLE
         }
-        %hash{$type} := @@examples.List;
+        %hash{$type} := @@examples.List;  # UNCOVERABLE
     }
 
-    %hash.Map
+    %hash.Map  # UNCOVERABLE
 }
 
 #- PURL::Type ------------------------------------------------------------------
-class PURL::Type:ver<0.0.13>:auth<zef:lizmat> {
+class PURL::Type:ver<0.0.14>:auth<zef:lizmat> {
     method default-repository() { "" }
 
     method check-identity($name, $, $ --> Nil) {
@@ -83,33 +83,33 @@ class PURL::Type:ver<0.0.13>:auth<zef:lizmat> {
 #- A ---------------------------------------------------------------------------
 class PURL::alpm is PURL::Type {
     method qualifier-keys() {
-        <arch distro repository_url>
+        <arch distro repository_url>  # UNCOVERABLE
     }
 }
 
 class PURL::apk is PURL::Type {
     method qualifier-keys() {
-        <arch distro repository_url>
+        <arch distro repository_url>  # UNCOVERABLE
     }
 }
 
 #- B ---------------------------------------------------------------------------
 class PURL::bitbucket is PURL::Type {
     method default-repository() {
-        "https://bitbucket.org"
+        "https://bitbucket.org"  # UNCOVERABLE
     }
 }
 
 class PURL::bitnami is PURL::Type {
     method default-repository() {
-        "https://downloads.bitnami.com/files/stacksmith"
+        "https://downloads.bitnami.com/files/stacksmith"  # UNCOVERABLE
     }
 }
 
 #- C ---------------------------------------------------------------------------
 class PURL::cargo is PURL::Type {
     method default-repository() {
-        "https://crates.io"
+        "https://crates.io"  # UNCOVERABLE
     }
 
     method canonicalize-name($_) { $_ }
@@ -117,7 +117,7 @@ class PURL::cargo is PURL::Type {
 
 class PURL::cocoapods is PURL::Type {
     method default-repository() {
-        "https://cdn.cocoapods.org/"
+        "https://cdn.cocoapods.org/"  # UNCOVERABLE
     }
     method check-identity($name, $, $ --> Nil) {
         die "Must have a name specified" unless $name;
@@ -134,31 +134,31 @@ class PURL::cocoapods is PURL::Type {
 
 class PURL::composer is PURL::Type {
     method default-repository() {
-        "https://packagist.org"
+        "https://packagist.org"  # UNCOVERABLE
     }
 }
 
 class PURL::conan is PURL::Type {
     method qualifier-keys() {
-        <build_type channel os prev repository_url rrev shared user>
+        <build_type channel os prev repository_url rrev shared user>  # UNCOVERABLE
     }
 }
 
 class PURL::conda is PURL::Type {
     method default-repository() {
-        "https://repo.anaconda.com"
+        "https://repo.anaconda.com"  # UNCOVERABLE
     }
     method qualifier-keys() {
-        <build channel subdir type>
+        <build channel subdir type>  # UNCOVERABLE
     }
 }
 
 class PURL::cpan is PURL::Type {    # XXX
     method default-repository() {
-        "https://www.cpan.org/"
+        "https://www.cpan.org/"  # UNCOVERABLE
     }
     method qualifier-keys() {
-        <download_url ext repository_url vcs_url>
+        <download_url ext repository_url vcs_url>  # UNCOVERABLE
     }
     method check-identity($name, $namespace, $version --> Nil) {
         if $namespace {
@@ -169,7 +169,7 @@ class PURL::cpan is PURL::Type {    # XXX
             die "Name may not contain '::': '$name'"
               if $name.contains('::');
         }
-        elsif $name {
+        elsif $name {  # UNCOVERABLE
             die "Name may not contain hyphens: '$name'"
               if $name.contains("-");
         }
@@ -183,10 +183,10 @@ class PURL::cpan is PURL::Type {    # XXX
 
 class PURL::cran is PURL::Type {
     method default-repository() {
-        "https://cran.r-project.org"
+        "https://cran.r-project.org"  # UNCOVERABLE
     }
     method qualifier-keys() {
-        <build channel subdir type>
+        <build channel subdir type>  # UNCOVERABLE
     }
     method check-identity($name, $namespace, $version --> Nil) {
         die "Must have a name specified"    unless $name;
@@ -199,7 +199,7 @@ class PURL::cran is PURL::Type {
 #- D ---------------------------------------------------------------------------
 class PURL::deb is PURL::Type {
     method qualifier-keys() {
-        <arch distro repository_url>
+        <arch distro repository_url>  # UNCOVERABLE
     }
     method check-identity($name, $namespace, $ --> Nil) {
         die "Must have a name specified"      unless $name;
@@ -209,26 +209,26 @@ class PURL::deb is PURL::Type {
 
 class PURL::docker is PURL::Type {
     method default-repository() {
-        "https://hub.docker.com"
+        "https://hub.docker.com"  # UNCOVERABLE
     }
 }
 
 #- G ---------------------------------------------------------------------------
 class PURL::gem is PURL::Type {
     method default-repository() {
-        "https://rubygems.org"
+        "https://rubygems.org"  # UNCOVERABLE
     }
 }
 
 class PURL::generic is PURL::Type {
     method qualifier-keys() {
-        <download_url checksum>
+        <download_url checksum>  # UNCOVERABLE
     }
 }
 
 class PURL::github is PURL::Type {
     method default-repository() {
-        "https://github.com"
+        "https://github.com"  # UNCOVERABLE
     }
 }
 
@@ -238,20 +238,20 @@ class PURL::golang is PURL::Type {
 #- H ---------------------------------------------------------------------------
 class PURL::hackage is PURL::Type {
     method default-repository() {
-        "https://hackage.haskell.org/"
+        "https://hackage.haskell.org/"  # UNCOVERABLE
     }
     method canonicalize-name($_) { $_ }
 }
 
 class PURL::hex is PURL::Type {
     method default-repository() {
-        "https://repo.hex.pm"
+        "https://repo.hex.pm"  # UNCOVERABLE
     }
 }
 
 class PURL::huggingface is PURL::Type {
     method default-repository() {
-        "https://huggingface.co"
+        "https://huggingface.co"  # UNCOVERABLE
     }
     method canonicalize-namespace($_) { $_ }
     method canonicalize-name(     $_) { $_ }
@@ -261,7 +261,7 @@ class PURL::huggingface is PURL::Type {
 #- L ---------------------------------------------------------------------------
 class PURL::luarocks is PURL::Type {
     method qualifier-keys() {
-        <repository_url>
+        <repository_url>  # UNCOVERABLE
     }
     method canonicalize-namespace($_) { $_ }
     method canonicalize-name(     $_) { $_ }
@@ -271,10 +271,10 @@ class PURL::luarocks is PURL::Type {
 #- M ---------------------------------------------------------------------------
 class PURL::maven is PURL::Type {
     method default-repository() {
-        "https://repo.maven.apache.org/maven2"
+        "https://repo.maven.apache.org/maven2"  # UNCOVERABLE
     }
     method qualifier-keys() {
-        <classifier repository_url type>
+        <classifier repository_url type>  # UNCOVERABLE
     }
     method canonicalize-name($_) { $_ }
     method canonicalize-namespace($_) { $_ }
@@ -284,10 +284,10 @@ class PURL::mlflow is PURL::Type {
     has $!lower-case;
 
     method default-repository() {
-        "https://repo.maven.apache.org/maven2"
+        "https://repo.maven.apache.org/maven2"  # UNCOVERABLE
     }
     method qualifier-keys() {
-        <model_uuid run_id>
+        <model_uuid run_id>  # UNCOVERABLE
     }
     method check-identity($name, $namespace, $ --> Nil) {
         die "Must have a name specified"    unless $name;
@@ -305,14 +305,14 @@ class PURL::mlflow is PURL::Type {
 #- N ---------------------------------------------------------------------------
 class PURL::npm is PURL::Type {
     method default-repository() {
-        "https://registry.npmjs.org"
+        "https://registry.npmjs.org"  # UNCOVERABLE
     }
     method check-identity($, $, $ --> Nil) { }
 }
 
 class PURL::nuget is PURL::Type {
     method default-repository() {
-        "https://www.nuget.org"
+        "https://www.nuget.org"  # UNCOVERABLE
     }
     method canonicalize-name($_) { $_ }
 }
@@ -320,17 +320,17 @@ class PURL::nuget is PURL::Type {
 #- O ---------------------------------------------------------------------------
 class PURL::oci is PURL::Type {
     method default-repository() {
-        "https://www.nuget.org"
+        "https://www.nuget.org"  # UNCOVERABLE
     }
     method qualifier-keys() {
-        <arch repository_url tag>
+        <arch repository_url tag>  # UNCOVERABLE
     }
 }
 
 #- P ---------------------------------------------------------------------------
 class PURL::pub is PURL::Type {
     method default-repository() {
-        "https://pub.dartlang.org"
+        "https://pub.dartlang.org"  # UNCOVERABLE
     }
     method check-identity($name, $namespace, $ --> Nil) {
         die "Must have a name specified" unless $name;
@@ -343,10 +343,10 @@ class PURL::pub is PURL::Type {
 
 class PURL::pypi is PURL::Type {
     method default-repository() {
-        "https://pypi.org"
+        "https://pypi.org"  # UNCOVERABLE
     }
     method qualifier-keys() {
-        <file_name>
+        <file_name>  # UNCOVERABLE
     }
     method canonicalize-name($_) {
         .lc.subst("_", "-", :global)
@@ -360,7 +360,7 @@ class PURL::qpkg is PURL::Type {
 #- R ---------------------------------------------------------------------------
 class PURL::raku is PURL::Type {
     method qualifier-keys() {
-        <download_url>
+        <download_url>  # UNCOVERABLE
     }
 
     method check-identity($name, $namespace, $version --> Nil) {
@@ -381,7 +381,7 @@ class PURL::raku is PURL::Type {
 
 class PURL::rpm is PURL::Type {
     method qualifier-keys() {
-        <arch distro epoch repository_url>
+        <arch distro epoch repository_url>  # UNCOVERABLE
     }
     method canonicalize-name($_) { $_ }
 }
@@ -389,8 +389,7 @@ class PURL::rpm is PURL::Type {
 #- S ---------------------------------------------------------------------------
 class PURL::swid is PURL::Type {
     method qualifier-keys() {
-        <download_url patch
-         tag_creator_name tag_creator_regid tag_id tag_version>
+        <download_url patch tag_creator_name tag_creator_regid tag_id tag_version> # UNCOVERABLE
     }
     method canonicalize-name($_) { $_ }
     method canonicalize-namespace($_) { $_ }

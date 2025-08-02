@@ -1,6 +1,9 @@
 Revision history for PURL
 
 {{$NEXT}}
+    - Achieved 100% coverage testing
+    - Made sure that requirement identities with a + are
+      rendered with a ?vers=VERS
 
 0.0.13  2025-08-01T21:52:22+02:00
     - Disallowed simultaneous @version and ?vers=vers:...

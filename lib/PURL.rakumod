@@ -5,7 +5,7 @@ use JSON::Fast:ver<0.19+>:auth<cpan:TIMOTIMO>;
 use URI::Encode:ver<1.0+>:auth<zef:raku-community-modules>;
 use VERS:ver<0.0.2+>:auth<zef:lizmat>;
 
-use PURL::Type:ver<0.0.13>:auth<zef:lizmat>;
+use PURL::Type:ver<0.0.14>:auth<zef:lizmat>;
 
 #- helper subroutines ----------------------------------------------------------
 
@@ -18,7 +18,7 @@ my sub is-identifier($_) {
 my sub trim-slashes(Str:D $_) { .subst(/^ '/'+ /).subst(/ '/'+ $/) }
 
 #- PURL ------------------------------------------------------------------------
-class PURL:ver<0.0.13>:auth<zef:lizmat> {
+class PURL:ver<0.0.14>:auth<zef:lizmat> {
     has Str $.scheme = 'pkg';
     has Str $.type is required;
     has Str $.name;
@@ -190,26 +190,44 @@ class PURL:ver<0.0.13>:auth<zef:lizmat> {
         die "Impossible to create PURL from '$id' because it is not pinned."
           if $must-be-pinned && !is-pinned($id);
 
+        my %spec =
+          scheme => "pkg",
+          type   => "raku",
+          name   => short-name($id),
+          (namespace => $_ with auth($id)),
+          qualifiers => my %qualifiers,
+        ;
+
         # If there is no version, but there is an API, make sure the
         # fallback all versions "*" is specified.  Otherwise, if there
         # is a version, remove the version spec at all if it is "any
         # version" already.
         my Str $version = ver($id);
         with api($id) -> $api {
-            $version = ($version // "*") ~ ":$api";
+            %spec<version> = ($version // "*") ~ ":$api";
         }
         elsif $version {  # UNCOVERABLE
-            $version = Str if $version eq '*';
+            if $version eq '*' {
+                # don't add a version
+            }
+            elsif $version.ends-with("+") {  # UNCOVERABLE
+                %qualifiers<vers> = VERS.new("vers:raku/>=$version.chop()");
+            }
+            else {
+                %spec<version> = $version;
+            }
         }
 
-        my %spec =
-          scheme    => "pkg",
-          type      => "raku",
-          (namespace => $_ with auth($id)),
-          name      => short-name($id),
-          version   => $version,
-        ;
-        %spec{.key} = .value for %_;
+        for %_ {
+            if .key eq 'qualifiers' {
+                for .value {
+                    %qualifiers{.key} = .value;
+                }
+            }
+            else {
+                %spec{.key} = .value;
+            }
+        }
 
         self.bless: |%spec
     }

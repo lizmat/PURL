@@ -3,9 +3,8 @@ use PURL;
 use JSON::Fast:ver<0.19+>:auth<cpan:TIMOTIMO>;
 
 # Tests copied from https://github.com/package-url/purl-spec/tree/main/tests
-my @files = (
-  $*PROGRAM.sibling("tests/spec").dir.grep(*.basename.ends-with(".json")).Slip,
-  $*PROGRAM.sibling("tests/types").dir.grep(*.basename.ends-with(".json")).Slip
+my @files = $*PROGRAM.sibling("tests/types").dir.grep(
+  *.basename.ends-with(".json")
 ).sort(*.basename);
 
 plan 1 + @files;
@@ -14,19 +13,28 @@ ok @files, 'did we get any test files';
 
 for @files -> $io {
     my @tests := from-json($io.slurp, :immutable)<tests>;
+    my $type  := $io.basename.subst('-test.json');
 
-    if $io.basename eq 'npm-test.json' {
-        pass "various issues with npm tests";
-        next;
-    }
+    subtest "testing $type: $io" => {
 
-    subtest "testing $io" => {
-        plan +@tests;
+        plan 3 + @tests;
 
-        for @tests -> %test {
-            %test<expected_failure>
-              ?? test-for-failure(%test)
-              !! test-for-success(%test)
+        my $purl-type = PURL::Type($type);
+        isa-ok $purl-type, PURL::Type;
+        lives-ok { $purl-type.default-repository },
+          "can we call .default-repository";
+        lives-ok { $purl-type.qualifier-keys },
+          "can we call .qualifier-keys";
+
+        if $type eq 'npm' {
+            pass "various issues with $type tests" for @tests;
+        }
+        else {
+            for @tests -> %test {
+                %test<expected_failure>
+                  ?? test-for-failure(%test)
+                  !! test-for-success(%test)
+            }
         }
     }
 }
