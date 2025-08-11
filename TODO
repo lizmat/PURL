@@ -1,0 +1,5 @@
+Make a purl tool that will allow:
+- provide download URL of the dist of a purl
+- download and unpack the dist of a purl
+- build a purl from args
+- show constituent parts of a given purl
