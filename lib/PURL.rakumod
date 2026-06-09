@@ -1,9 +1,9 @@
-use Identity::Utils:ver<0.0.25+>:auth<zef:lizmat> <
+use Identity::Utils:ver<0.0.28+>:auth<zef:lizmat> <
   api auth is-pinned short-name ver
 >;
-use JSON::Fast:ver<0.19+>:auth<cpan:TIMOTIMO>;
+use JSON::Fast:ver<0.20+>:auth<zef:timo>;
 use URI::Encode:ver<1.0+>:auth<zef:raku-community-modules>;
-use VERS:ver<0.0.2+>:auth<zef:lizmat>;
+use VERS:ver<0.0.3+>:auth<zef:lizmat>;
 
 use PURL::Type:ver<0.0.14>:auth<zef:lizmat>;
 

@@ -1,5 +1,5 @@
 use Test;
-use Identity::Utils:ver<0.0.19+>:auth<zef:lizmat> <
+use Identity::Utils:ver<0.0.28+>:auth<zef:lizmat> <
   api auth short-name ver
 >;
 use PURL;

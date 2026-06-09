@@ -8,10 +8,10 @@
   "depends": {
     "runtime": {
       "requires": [
-        "Identity::Utils:ver<0.0.25+>:auth<zef:lizmat>",
-        "JSON::Fast:ver<0.19+>:auth<cpan:TIMOTIMO>",
+        "Identity::Utils:ver<0.0.28+>:auth<zef:lizmat>",
+        "JSON::Fast:ver<0.20+>:auth<zef:timo>",
         "URI::Encode:ver<1.0+>:auth<zef:raku-community-modules>",
-        "VERS:ver<0.0.2+>:auth<zef:lizmat>"
+        "VERS:ver<0.0.3+>:auth<zef:lizmat>"
       ]
     }
   },

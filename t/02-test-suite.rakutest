@@ -1,6 +1,6 @@
 use Test;
 use PURL;
-use JSON::Fast:ver<0.19+>:auth<cpan:TIMOTIMO>;
+use JSON::Fast:ver<0.20+>:auth<zef:timo>;
 
 # Tests copied from https://github.com/package-url/purl-spec/tree/main/tests
 my @files = $*PROGRAM.sibling("tests/types").dir.grep(

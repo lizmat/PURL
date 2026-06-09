@@ -1,6 +1,8 @@
 Revision history for PURL
 
 {{$NEXT}}
+    - Update dependencies
+    - Update copyright year
 
 0.0.14  2025-08-02T18:18:57+02:00
     - Achieved 100% coverage testing

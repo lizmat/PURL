@@ -1,9 +1,10 @@
 {
+  "$schema": "http://cyclonedx.org/schema/bom-1.6.schema.json",
   "bomFormat": "CycloneDX",
   "specVersion": "1.6",
   "version": 1,
   "metadata": {
-    "timestamp": "2025-08-02T16:14:54+00:00",
+    "timestamp": "2025-08-03T12:14:58+00:00",
     "lifecycles": [
       {
         "phase": "pre-build"
@@ -18,7 +19,7 @@
     "component": {
       "type": "library",
       "mime-type": "text/plain",
-      "bom-ref": "pkg:raku/zef:lizmat/PURL@0.0.13",
+      "bom-ref": "pkg:raku/zef:lizmat/PURL@0.0.14",
       "authors": [
         {
           "bom-ref": "ElizabethMattijsen",
@@ -28,7 +29,7 @@
       "publisher": "zef",
       "group": "zef:lizmat",
       "name": "PURL",
-      "version": "0.0.13",
+      "version": "0.0.14",
       "description": "Package URL specification v1.0.X",
       "scope": "required",
       "licenses": [
@@ -40,10 +41,10 @@
           }
         }
       ],
-      "purl": "pkg:raku/zef:lizmat/PURL@0.0.13",
+      "purl": "pkg:raku/zef:lizmat/PURL@0.0.14",
       "externalReferences": [
         {
-          "url": "https://raku.land/zef:lizmat/PURL?v=0.0.13",
+          "url": "https://raku.land/zef:lizmat/PURL?v=0.0.14",
           "type": "documentation"
         },
         {
@@ -59,7 +60,7 @@
           "type": "distribution"
         },
         {
-          "url": "https://github.com/lizmat/PURL/archive/refs/tags/0.0.13.zip",
+          "url": "https://github.com/lizmat/PURL/archive/refs/tags/0.0.14.zip",
           "type": "source-distribution"
         },
         {
@@ -86,7 +87,7 @@
         {
           "type": "library",
           "mime-type": "text/plain",
-          "bom-ref": "pkg:raku/zef:lizmat/SBOM::Raku@0.0.4",
+          "bom-ref": "pkg:raku/zef:lizmat/SBOM::Raku@0.0.6",
           "authors": [
             {
               "bom-ref": "ElizabethMattijsen",
@@ -96,7 +97,7 @@
           "publisher": "zef",
           "group": "zef:lizmat",
           "name": "SBOM::Raku",
-          "version": "0.0.4",
+          "version": "0.0.6",
           "description": "Raku specific SBOM functionality",
           "scope": "required",
           "licenses": [
@@ -108,10 +109,10 @@
               }
             }
           ],
-          "purl": "pkg:raku/zef:lizmat/SBOM::Raku@0.0.4",
+          "purl": "pkg:raku/zef:lizmat/SBOM::Raku@0.0.6",
           "externalReferences": [
             {
-              "url": "https://raku.land/zef:lizmat/SBOM::Raku?v=0.0.4",
+              "url": "https://raku.land/zef:lizmat/SBOM::Raku?v=0.0.6",
               "type": "documentation"
             },
             {
@@ -127,7 +128,7 @@
               "type": "distribution"
             },
             {
-              "url": "https://github.com/lizmat/SBOM-Raku/archive/refs/tags/0.0.4.zip",
+              "url": "https://github.com/lizmat/SBOM-Raku/archive/refs/tags/0.0.6.zip",
               "type": "source-distribution"
             },
             {
@@ -145,6 +146,59 @@
     }
   },
   "components": [
+    {
+      "type": "library",
+      "mime-type": "text/plain",
+      "bom-ref": "pkg:raku/cpan:TIMOTIMO/JSON::Fast@0.19",
+      "authors": [
+        {
+          "bom-ref": "TimoPaulssen",
+          "name": "Timo Paulssen"
+        },
+        {
+          "bom-ref": "TonyODell",
+          "name": "Tony O'Dell"
+        },
+        {
+          "bom-ref": "WenzelPPPeppmeyer",
+          "name": "Wenzel P. P. Peppmeyer"
+        },
+        {
+          "bom-ref": "ElizabethMattijsen",
+          "name": "Elizabeth Mattijsen"
+        }
+      ],
+      "publisher": "cpan",
+      "group": "cpan:TIMOTIMO",
+      "name": "JSON::Fast",
+      "version": "0.19",
+      "description": "A naive, fast json parser and serializer; drop-in replacement for JSON::Tiny",
+      "scope": "required",
+      "licenses": [
+        {
+          "license": {
+            "id": "Artistic-2.0",
+            "acknowledgement": "declared",
+            "url": "https://spdx.org/licenses/Artistic-2.0.json"
+          }
+        }
+      ],
+      "purl": "pkg:raku/cpan:TIMOTIMO/JSON::Fast@0.19",
+      "externalReferences": [
+        {
+          "url": "https://raku.land/cpan:TIMOTIMO/JSON::Fast?v=0.19",
+          "type": "documentation"
+        },
+        {
+          "url": "git://github.com/timo/json_fast",
+          "type": "distribution"
+        },
+        {
+          "url": "https://spdx.org/licenses/Artistic-2.0.json",
+          "type": "license"
+        }
+      ]
+    },
     {
       "type": "library",
       "mime-type": "text/plain",
@@ -198,59 +252,6 @@
         "META",
         "IDENTITY",
         "ECOSYSTEM"
-      ]
-    },
-    {
-      "type": "library",
-      "mime-type": "text/plain",
-      "bom-ref": "pkg:raku/cpan:TIMOTIMO/JSON::Fast@0.19",
-      "authors": [
-        {
-          "bom-ref": "TimoPaulssen",
-          "name": "Timo Paulssen"
-        },
-        {
-          "bom-ref": "TonyODell",
-          "name": "Tony O'Dell"
-        },
-        {
-          "bom-ref": "WenzelPPPeppmeyer",
-          "name": "Wenzel P. P. Peppmeyer"
-        },
-        {
-          "bom-ref": "ElizabethMattijsen",
-          "name": "Elizabeth Mattijsen"
-        }
-      ],
-      "publisher": "cpan",
-      "group": "cpan:TIMOTIMO",
-      "name": "JSON::Fast",
-      "version": "0.19",
-      "description": "A naive, fast json parser and serializer; drop-in replacement for JSON::Tiny",
-      "scope": "required",
-      "licenses": [
-        {
-          "license": {
-            "id": "Artistic-2.0",
-            "acknowledgement": "declared",
-            "url": "https://spdx.org/licenses/Artistic-2.0.json"
-          }
-        }
-      ],
-      "purl": "pkg:raku/cpan:TIMOTIMO/JSON::Fast@0.19",
-      "externalReferences": [
-        {
-          "url": "https://raku.land/cpan:TIMOTIMO/JSON::Fast?v=0.19",
-          "type": "documentation"
-        },
-        {
-          "url": "git://github.com/timo/json_fast",
-          "type": "distribution"
-        },
-        {
-          "url": "https://spdx.org/licenses/Artistic-2.0.json",
-          "type": "license"
-        }
       ]
     },
     {
@@ -316,59 +317,6 @@
     {
       "type": "library",
       "mime-type": "text/plain",
-      "bom-ref": "pkg:raku/zef:raku-community-modules/URI::Encode@1.0",
-      "authors": [
-        {
-          "bom-ref": "DavidFarrell",
-          "name": "David Farrell"
-        },
-        {
-          "bom-ref": "Rakucommunity",
-          "name": "Raku community"
-        }
-      ],
-      "publisher": "zef",
-      "group": "zef:raku-community-modules",
-      "name": "URI::Encode",
-      "version": "1.0",
-      "description": "a Raku module for encoding / decoding URIs",
-      "scope": "required",
-      "licenses": [
-        {
-          "license": {
-            "id": "BSD-2-Clause-FreeBSD",
-            "acknowledgement": "declared",
-            "url": "https://spdx.org/licenses/BSD-2-Clause-FreeBSD.json"
-          }
-        }
-      ],
-      "purl": "pkg:raku/zef:raku-community-modules/URI::Encode@1.0",
-      "externalReferences": [
-        {
-          "url": "https://raku.land/zef:raku-community-modules/URI::Encode?v=1.0",
-          "type": "documentation"
-        },
-        {
-          "url": "https://github.com/raku-community-modules/URI-Encode",
-          "type": "distribution"
-        },
-        {
-          "url": "https://github.com/raku-community-modules/URI-Encode/issues",
-          "type": "issue-tracker"
-        },
-        {
-          "url": "https://github.com/raku-community-modules/URI-Encode/archive/refs/tags/1.0.zip",
-          "type": "source-distribution"
-        },
-        {
-          "url": "https://spdx.org/licenses/BSD-2-Clause-FreeBSD.json",
-          "type": "license"
-        }
-      ]
-    },
-    {
-      "type": "library",
-      "mime-type": "text/plain",
       "bom-ref": "pkg:raku/zef:lizmat/VERS@0.0.2",
       "authors": [
         {
@@ -421,11 +369,64 @@
         "SBOM",
         "SW_VERS"
       ]
+    },
+    {
+      "type": "library",
+      "mime-type": "text/plain",
+      "bom-ref": "pkg:raku/zef:raku-community-modules/URI::Encode@1.0",
+      "authors": [
+        {
+          "bom-ref": "DavidFarrell",
+          "name": "David Farrell"
+        },
+        {
+          "bom-ref": "Rakucommunity",
+          "name": "Raku community"
+        }
+      ],
+      "publisher": "zef",
+      "group": "zef:raku-community-modules",
+      "name": "URI::Encode",
+      "version": "1.0",
+      "description": "a Raku module for encoding / decoding URIs",
+      "scope": "required",
+      "licenses": [
+        {
+          "license": {
+            "id": "BSD-2-Clause-FreeBSD",
+            "acknowledgement": "declared",
+            "url": "https://spdx.org/licenses/BSD-2-Clause-FreeBSD.json"
+          }
+        }
+      ],
+      "purl": "pkg:raku/zef:raku-community-modules/URI::Encode@1.0",
+      "externalReferences": [
+        {
+          "url": "https://raku.land/zef:raku-community-modules/URI::Encode?v=1.0",
+          "type": "documentation"
+        },
+        {
+          "url": "https://github.com/raku-community-modules/URI-Encode",
+          "type": "distribution"
+        },
+        {
+          "url": "https://github.com/raku-community-modules/URI-Encode/issues",
+          "type": "issue-tracker"
+        },
+        {
+          "url": "https://github.com/raku-community-modules/URI-Encode/archive/refs/tags/1.0.zip",
+          "type": "source-distribution"
+        },
+        {
+          "url": "https://spdx.org/licenses/BSD-2-Clause-FreeBSD.json",
+          "type": "license"
+        }
+      ]
     }
   ],
   "externalReferences": [
     {
-      "url": "https://raku.land/zef:lizmat/PURL?v=0.0.13",
+      "url": "https://raku.land/zef:lizmat/PURL?v=0.0.14",
       "type": "documentation"
     },
     {
@@ -441,7 +442,7 @@
       "type": "distribution"
     },
     {
-      "url": "https://github.com/lizmat/PURL/archive/refs/tags/0.0.13.zip",
+      "url": "https://github.com/lizmat/PURL/archive/refs/tags/0.0.14.zip",
       "type": "source-distribution"
     },
     {
@@ -451,19 +452,19 @@
   ],
   "dependencies": [
     {
-      "ref": "Identity::Utils:ver<0.0.25>:auth<zef:lizmat>",
+      "ref": "pkg:raku/cpan:TIMOTIMO/JSON::Fast?vers=vers:raku/%3E=0.19"
+    },
+    {
+      "ref": "pkg:raku/zef:lizmat/Identity::Utils?vers=vers:raku/%3E=0.0.25",
       "dependsOn": [
-        "String::Utils:ver<0.0.35>:auth<zef:lizmat>"
+        "pkg:raku/zef:lizmat/String::Utils?vers=vers:raku/%3E=0.0.35"
       ]
     },
     {
-      "ref": "JSON::Fast:ver<0.19>:auth<cpan:TIMOTIMO>"
+      "ref": "pkg:raku/zef:lizmat/VERS?vers=vers:raku/%3E=0.0.2"
     },
     {
-      "ref": "URI::Encode:ver<1.0>:auth<zef:raku-community-modules>"
-    },
-    {
-      "ref": "VERS:ver<0.0.2>:auth<zef:lizmat>"
+      "ref": "pkg:raku/zef:raku-community-modules/URI::Encode?vers=vers:raku/%3E=1.0"
     }
   ]
 }
