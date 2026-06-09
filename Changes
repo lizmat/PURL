@@ -1,6 +1,8 @@
 Revision history for PURL
 
 {{$NEXT}}
+
+0.0.15  2026-06-09T21:20:25+02:00
     - Update dependencies
     - Update copyright year
 

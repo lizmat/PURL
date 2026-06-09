@@ -5,7 +5,7 @@ use JSON::Fast:ver<0.20+>:auth<zef:timo>;
 use URI::Encode:ver<1.0+>:auth<zef:raku-community-modules>;
 use VERS:ver<0.0.3+>:auth<zef:lizmat>;
 
-use PURL::Type:ver<0.0.14>:auth<zef:lizmat>;
+use PURL::Type:ver<0.0.15>:auth<zef:lizmat>;
 
 #- helper subroutines ----------------------------------------------------------
 
@@ -18,7 +18,7 @@ my sub is-identifier($_) {
 my sub trim-slashes(Str:D $_) { .subst(/^ '/'+ /).subst(/ '/'+ $/) }
 
 #- PURL ------------------------------------------------------------------------
-class PURL:ver<0.0.14>:auth<zef:lizmat> {
+class PURL:ver<0.0.15>:auth<zef:lizmat> {
     has Str $.scheme = 'pkg';
     has Str $.type is required;
     has Str $.name;
