@@ -1,6 +1,8 @@
 Revision history for PURL
 
 {{$NEXT}}
+
+0.0.16  2026-09-16T18:21:44+02:00
     - Update dependencies to make it RakuAST ready
 
 0.0.15  2026-06-09T21:20:25+02:00
