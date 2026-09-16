@@ -4,7 +4,7 @@
   "specVersion": "1.6",
   "version": 1,
   "metadata": {
-    "timestamp": "2026-09-16T16:22:19+00:00",
+    "timestamp": "2026-09-16T16:31:33+00:00",
     "lifecycles": [
       {
         "phase": "pre-build"
@@ -19,7 +19,7 @@
     "component": {
       "type": "library",
       "mime-type": "text/plain",
-      "bom-ref": "pkg:raku/zef:lizmat/PURL@0.0.16",
+      "bom-ref": "pkg:raku/zef:lizmat/PURL@0.0.17",
       "authors": [
         {
           "bom-ref": "ElizabethMattijsen",
@@ -29,7 +29,7 @@
       "publisher": "zef",
       "group": "zef:lizmat",
       "name": "PURL",
-      "version": "0.0.16",
+      "version": "0.0.17",
       "description": "Package URL specification v1.0.X",
       "scope": "required",
       "licenses": [
@@ -41,14 +41,14 @@
           }
         }
       ],
-      "purl": "pkg:raku/zef:lizmat/PURL@0.0.16",
+      "purl": "pkg:raku/zef:lizmat/PURL@0.0.17",
       "externalReferences": [
         {
           "url": "https://codeberg.org/lizmat/PURL",
           "type": "distribution"
         },
         {
-          "url": "https://raku.land/zef:lizmat/PURL?v=0.0.16",
+          "url": "https://raku.land/zef:lizmat/PURL?v=0.0.17",
           "type": "documentation"
         },
         {
@@ -629,7 +629,7 @@
       "type": "distribution"
     },
     {
-      "url": "https://raku.land/zef:lizmat/PURL?v=0.0.16",
+      "url": "https://raku.land/zef:lizmat/PURL?v=0.0.17",
       "type": "documentation"
     },
     {
