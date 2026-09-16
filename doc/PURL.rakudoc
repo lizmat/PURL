@@ -189,7 +189,7 @@ returns a list of valid PURL examples of that PURL type.
 
 Elizabeth Mattijsen <liz@raku.rocks>
 
-Source can be located at: https://github.com/lizmat/PURL . Comments
+Source can be located at: https://codeberg.org/lizmat/PURL . Comments
 and Pull Requests are welcome.
 
 If you like this module, or what I’m doing more generally, committing to a

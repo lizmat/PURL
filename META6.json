@@ -8,8 +8,8 @@
   "depends": {
     "runtime": {
       "requires": [
-        "Identity::Utils:ver<0.0.28+>:auth<zef:lizmat>",
-        "JSON::Fast:ver<0.20+>:auth<zef:timo>",
+        "Identity::Utils:ver<0.0.29+>:auth<zef:lizmat>",
+        "JSON::Fast:ver<0.21+>:auth<zef:timo>",
         "URI::Encode:ver<1.0+>:auth<zef:raku-community-modules>",
         "VERS:ver<0.0.3+>:auth<zef:lizmat>"
       ]
@@ -29,11 +29,11 @@
     "known-types",
     "examples"
   ],
-  "source-url": "https://github.com/lizmat/PURL.git",
+  "source-url": "https://codeberg.org/lizmat/PURL.git",
   "support": {
-    "bugtracker": "https://github.com/lizmat/SBOM-Raku/issues",
+    "bugtracker": "https://codeberg.org/lizmat/SBOM-Raku/issues",
     "email": "liz@raku.rocks",
-    "source": "https://github.com/lizmat/PURL.git"
+    "source": "https://codeberg.org/lizmat/PURL.git"
   },
   "tags": [
     "PURL",
